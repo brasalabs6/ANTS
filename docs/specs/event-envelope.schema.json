@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ANTS Event Envelope v1 (draft)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "type", "version", "org_id", "colony_id", "sequence", "timestamp", "actor", "correlation_id", "data"],
+  "properties": {
+    "event_id": {"type": "string", "format": "uuid"},
+    "type": {"type": "string", "pattern": "^[a-z][a-z_]*(\\.[a-z][a-z_]*)+$"},
+    "version": {"type": "integer", "minimum": 1},
+    "org_id": {"type": "string", "format": "uuid"},
+    "colony_id": {"type": "string", "format": "uuid"},
+    "mission_id": {"type": "string", "format": "uuid"},
+    "sequence": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "actor": {"type": "object", "required": ["kind", "id"], "additionalProperties": false, "properties": {"kind": {"enum": ["human", "agent", "system"]}, "id": {"type": "string"}}},
+    "correlation_id": {"type": "string"},
+    "causation_id": {"type": "string", "format": "uuid"},
+    "data": {"type": "object"}
+  }
+}
