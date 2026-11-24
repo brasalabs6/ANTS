@@ -7,3 +7,12 @@ coverage/
 *.log
 .DS_Store
 .turbo/
+
+# Local colony state, profiles and credentials (never commit real data)
+.ants/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

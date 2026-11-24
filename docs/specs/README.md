@@ -1,5 +1,5 @@
 # Contract artifacts
 
-These machine-readable files are **illustrative initial contracts**, not a complete API implementation. The OpenAPI subset covers a read and lease claim; the full inventory is in [05](../05-api.md). Extend with contract tests as each vertical slice is implemented. JSON Schema defines the event envelope; event-specific payload schemas will be added before publishing v1. No actual server or SDK generated yet.
+These machine-readable files are **illustrative initial contracts**, not a complete API implementation. The OpenAPI subset covers mission read, goal read, context read and lease claim; the intended wider surface is in [05](../05-api.md). No stable API v1 claimed. Extend with contract tests as each vertical slice is implemented. JSON Schema defines the event envelope; event-specific payload schemas will be added before publishing v1. No actual server or SDK generated yet.
 
-[Implementation notes and transaction pseudocode](implementation-notes.md).
+[Implementation notes and transaction pseudocode](implementation-notes.md). [CLI contract](cli-contract.md). [Goal example](examples/goal.example.json) and [context example](examples/context.example.json) are illustrative fixtures, not actual accepted data or execution authorization. [Guardrail example](examples/guardrails.example.json) illustrates policy, not deployed config. [22](../22-execution-contracts.md) owns cross-module semantics. Exact payload schemas and error/compatibility tests must be completed per R milestone.

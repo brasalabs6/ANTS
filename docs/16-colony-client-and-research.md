@@ -16,7 +16,7 @@ Plane is intended to become a functional superset of the validated ANTS capabili
 | Colony host | HTTP, authoritative storage, policy, leases, board, memory and events | Yes (or configured cloud store) |
 | Runner | Executes a pre-authorized agent adapter; connects to host as scoped client | No |
 | Optional MCP adapter | Exposes same colony operations to MCP-capable agents | No |
-| Optional Vite UI | Human administration/observation via HTTP | No |
+| Vite UI (runtime optional, alpha required) | Human administration/observation via HTTP | No |
 
 One Bun standalone binary may expose these roles through subcommands for convenient deployment. This is packaging, not an architectural requirement to embed a server in each client. Client and runner can be distributed separately later if binary size or security isolation warrants it. A client-only process never listens for incoming HTTP, initializes colony tables or requires Bun/Node/SQLite services, Docker or MCP. It stores only local connection settings and scoped credentials plus explicitly requested temporary caches. An existing local host, remote self-host or hosted ANTS Cloud instance is addressed through the same versioned HTTP API. Server is authoritative while running; do not bypass policy by opening its SQLite file. Loopback is not implicit trust: require scoped credentials for agent access. Local bootstrap ownership is explicit.
 
@@ -78,10 +78,12 @@ Treat each feature as a testable capability, not just an implementation ticket. 
 | Memory validation | Compare evidence-backed vs raw transcript retrieval | Knowledge provenance, retention and disputes |
 | Constitution governance | Verify revisions, policy and operator pause | Nested policies, approvals and delegated authority |
 | Pulse and runner scheduling | Measure bounded restart/recovery and idle behavior | Multi-team budgets, workload fairness and fleet isolation |
+| Intents and replaceable planning roles | compare generalists, specialized roles and competing proposals; preserve refuted directions | hierarchical/hybrid orchestration with evidence lineage |
+| Human Command Center and approvals | compare intervention burden, guardrail enforcement and task visibility | mixed human/agent work, approval delegation and organizational governance |
 | Concurrency | Race claims, expiry, stale writes and duplicate events | Distributed scaling, tenant isolation and ownership |
 | Client portability | Join one served colony from different machines and models | Versioned protocol, SSO and organization integrations |
 
-Compare systems at equivalent budgets and access. Report quality, accepted progress per cost, recovery time, duplication, context fidelity, review burden and safety violations. Do not infer consciousness or guarantee zero context loss. Transfer deliverables: versioned contracts, sanitized test fixtures, failure cases, ADRs, reproducible benchmarks and optional reusable pure TypeScript domain modules. Plane must separately validate scale, mixed human/agent semantics and enterprise security. No dual writes, shared production database or automatic deployment into Plane.
+Compare systems at equivalent budgets and access. Report quality, accepted progress per cost, recovery time, duplication, context fidelity, review burden and safety violations. Do not infer consciousness or guarantee zero context loss. Use [experiment report template](research/experiment-template.md) and [requirements matrix](23-requirements.md). Transfer deliverables: versioned contracts, sanitized test fixtures, failure cases, ADRs, reproducible benchmarks and optional reusable pure TypeScript domain modules. Plane must separately validate scale, mixed human/agent semantics and enterprise security. No dual writes, shared production database or automatic deployment into Plane.
 
 ## MVP acceptance additions
 
@@ -92,4 +94,4 @@ Compare systems at equivalent budgets and access. Report quality, accepted progr
 - Human operator can pause the colony, invalidate leases and stop authorized managed runs; agents cannot change constitution or expand access.
 - At least one reproducible research report accompanies the first release candidate; measured results and limitations are recorded.
 
-See [testing](11-testing.md), [portable architecture](15-portable-architecture.md), [Pulse](14-pulse.md), [ADR-013](adr/013-client-server-and-research.md).
+Human dashboard and enforced approvals are required for R07; host remains independent of browser. See [testing](11-testing.md), [portable architecture](15-portable-architecture.md), [Pulse](14-pulse.md), [ADR-013](adr/013-client-server-and-research.md).

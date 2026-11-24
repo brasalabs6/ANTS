@@ -1,6 +1,6 @@
 # 17 — ANTS Goals: persistent collective goal pursuit
 
-Status: v0.4 design baseline; first-class MVP capability, not implemented. This document extends 13–16, superseding any interpretation of an empty task queue or finished agent session as mission completion.
+Status: v0.7 consolidated design baseline; first-class MVP capability, not implemented. This document extends 13–16, superseding any interpretation of an empty task queue or finished agent session as mission completion.
 
 ## Product contract
 
@@ -10,7 +10,7 @@ Inspiration: [Using Goals in Codex (OpenAI, May 9 2026)](https://developers.open
 
 ## Model
 
-Constitution: enduring mission, governance, authorized capabilities and hard limits. Mission: existing lifecycle and container for work. Goal: concrete objective under one mission, with revisioned completion criteria and execution policy. Task: independently claimable work item that contributes to a goal. MVP permits one actively pursued goal per mission; data model supports multiple goals with explicitly allocated resources later. A goal cannot widen its parent constitution. Human authorizes objective, acceptance checks, budget, deadline and schedule; agents may propose changes or subgoals, never silently amend them.
+Constitution: enduring mission, governance, authorized capabilities and hard limits. Mission: existing lifecycle and container for work. Goal: concrete objective under one mission, with revisioned completion criteria and execution policy. Task: independently claimable work item that contributes to a goal. MVP permits one actively pursued goal per mission (including blocked/paused/exhausted slot until explicitly deactivated or terminal, see [22](22-execution-contracts.md)); data model supports multiple goals with explicitly allocated resources later. A goal cannot widen its parent constitution. Human authorizes objective, acceptance checks, budget, deadline and schedule; agents may propose changes or subgoals, never silently amend them.
 
 Goal fields: org_id, colony_id, mission_id, id, revision, objective, status, criteria[], policy, constitution_revision, created_by, created_at, deadline, next_evaluation_at, last_meaningful_progress_at, stop_reason, budget references, evidence snapshot, version. Criterion: id, description, required, verifier_kind (trusted test / independent review / human approval), trusted verifier reference or rubric, expected condition, result state (unknown / pass / fail / stale), evidence references and artifact revision/hash. No arbitrary executable command supplied by untrusted posts. Separate goal_attempt, verification, and durable reconciliation intent records. Link tasks and findings to goal ID/revision and relevant criterion IDs. Every accepted state change is audited and emits a typed event/outbox record.
 
@@ -30,13 +30,13 @@ Reconcile on goal activation, new verified evidence, task transitions, lease exp
 6. If work stalls, retain evidence, recover expired leases, try an authorized alternative within retry/no-progress limits; otherwise record blocker, next check or human decision needed. If resource/deadline limits are reached, stop and report remaining criteria.
 7. Commit decision and intents atomically; dispatch outside the transaction with rechecks and idempotency. Keep append-only history subject to retention.
 
-Reconciliation is at-least-once, not exactly-once. Serialize with mission/goal lifecycle and budget locks in deterministic order (org -> mission -> goal -> task/lease -> event counter). A goal revision change invalidates stale verification and work fences as required. Recheck revision, status, budget and approved schedule immediately before dispatch. Never make external side effects solely on basis of board text. No automatic credential expansion, agent self-registration, infinite retry or autonomous changes to evaluation rules. Existing sandbox, review, stop and revocation requirements apply.
+Reconciliation is at-least-once, not exactly-once. Serialize with mission/goal lifecycle and budget locks in [22](22-execution-contracts.md) canonical order (org/budget -> colony/policy -> mission -> goal -> plan/intent -> task -> lease/run/approval -> event counter). A goal revision change invalidates stale verification and work fences as required. Recheck revision, status, budget and approved schedule immediately before dispatch. Never make external side effects solely on basis of board text. No automatic credential expansion, agent self-registration, infinite retry or autonomous changes to evaluation rules. Existing sandbox, review, stop and revocation requirements apply.
 
-## Exploration and planner roles (v0.6)
+## Exploration and planner roles
 
 [Intent and role specification](20-intents-and-agent-roles.md) distinguishes an exploratory direction from a task and from a scheduler run intent. Goal Engine requests scoped planning sessions when criterion coverage is missing; replaceable planners and other authorized agents propose plans/intents/tasks. Use fenced revision admission and bounded triggers, not mandatory central supervision. Intent resolution is not goal completion. No role expands authority.
 
-## Human control (v0.5)
+## Human control
 
 Expose current goal, unmet criteria, plan revisions, tasks, approval blockers and evidence through [Command Center](18-command-center.md). Goal reconciliation honors [guardrails](19-guardrails-and-approvals.md); no pending approval may be bypassed for progress. A human can revise plans, reprioritize tasks, pause and reject evidence; approved criterion changes require explicit revision. Independent safe work may continue while one intent awaits approval.
 
@@ -46,11 +46,11 @@ A task marked done, successful session exit, green test unrelated to the goal, o
 
 ## Proactivity and limits
 
-Default activation explicitly authorizes a bounded continuation policy: allowed runners or external pull only, maximum concurrent sessions, per-session duration, goal budget, deadline, retry count and no-progress threshold, schedule/cooldown. No fixed interval needed if events suffice. A meaningful-progress signal is new verified evidence or accepted artifact improvement, not number of messages or token use. Repeated identical failures, no eligible workers, missing permission, ambiguous criteria or dependency outage produce distinct visible blocked reasons. Transient blockers may be rechecked on authorized events/intervals with backoff; human approval needed for new spend, scope, credentials or constitution changes. Pause and revoke remain effective across host restart. External agents' computation outside the host is not controllable by ANTS.
+Default activation explicitly authorizes a bounded continuation policy: allowed runners or external pull only, maximum concurrent sessions, per-session duration, goal budget, deadline, retry count and no-progress threshold, schedule/cooldown. No fixed interval needed if events suffice. A meaningful-progress signal is new verified evidence or accepted artifact improvement, not number of messages or token use. Repeated identical failures, no eligible workers, missing permission, ambiguous criteria or dependency outage produce distinct visible blocked reasons. An active goal can retain independent runnable work when only one branch is blocked; goal-wide blocked state means no eligible progress. Waiting reasons are distinct from terminal completion. Transient blockers may be rechecked on authorized events/intervals with backoff; human approval needed for new spend, scope, credentials or constitution changes. Pause and revoke remain effective across host restart. External agents' computation outside the host is not controllable by ANTS.
 
 ## CLI and API (draft)
 
-Commands (not shipped):
+Commands (not shipped; see [CLI contract](specs/cli-contract.md) and [goal example](specs/examples/goal.example.json)):
 ```text
 ants goal create --file goal.md
 ants goal activate <id>
@@ -77,5 +77,7 @@ Human goal: implement a CLI that imports CSV and emits valid JSON, with specifie
 - Missing runner produces visible waiting/blocked state; no phantom worker. Repeated no-progress stops or escalates rather than spinning.
 - Local CLI and remote client see same persisted goal status; multiple goals later require fair scheduling and isolated budgets.
 - Benchmark single-agent persistent goal versus decentralized swarm with passive board versus ANTS Goal Engine + Pulse under equal budgets. Measure verified completion rate, unsolicited continuation count, false completion rate, time/cost, recovery latency and operator interventions. Record negative results and limitations; transfer validated contracts and tests to broader orchestration including Plane only after separate review.
+
+Criteria, budget and deadline changes require explicit human-approved revision, preserving previous verification history; no test tampering to satisfy a goal. See [22](22-execution-contracts.md) and [23](23-requirements.md).
 
 MVP sequence: goal schema/lifecycle with constitution (R02); evidence and context with R03–R04; deterministic reconciler with mock Pulse R06; end-to-end proactive goal demo as release gate R07. No actual implementation or benchmark results in this specification.

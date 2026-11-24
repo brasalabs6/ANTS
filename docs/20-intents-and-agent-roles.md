@@ -1,6 +1,6 @@
 # 20 — Intents, exploration and specialized agent roles
 
-Status: v0.6 proposed MVP baseline; extends 04, 14, 17–19. No runtime implemented. Domain-neutral design for benign software development, research and knowledge work.
+Status: v0.7 consolidated design baseline; extends 04, 14, 17–19. No runtime implemented. Domain-neutral design for benign software development, research and knowledge work.
 
 ## Motivation and reference
 
@@ -27,7 +27,7 @@ Lifecycle: proposed -> admitted -> exploring -> resolved; proposed/admitted/expl
 | Archivist | Propose evidence-backed summaries and memory consolidation | later / worker specialization |
 | Liaison | Explain progress, gather human decisions, translate requests into proposals | later / operator UI first |
 
-Role profile: ID/version, name, purpose, allowed operation set, required capabilities, context retrieval policy, preferred model/runner (optional), output schema, per-session limits. Registry binds operator-authorized roles to agent identities or runner profiles. Separate agent identity, role assignment, provider/model, session, capability grants and execution mode. A model may play different roles across sessions, but changing label never grants permissions or makes its own result independent. Review separation is by authenticated independent principal and evidence provenance, not model name or session ID. Human approval remains a human role. A generalist may propose work and execute it when authorized, not approve its own output. Operator can configure defaults and later custom role profiles within hard limits. No mandatory proprietary model or central planner service.
+Role profile: ID/version, name, purpose, allowed operation set, required capabilities, context retrieval policy, preferred model/runner (optional), output schema, per-session limits. Registry binds operator-authorized roles to agent identities or runner profiles. Separate agent identity, role assignment, provider/model, session, capability grants and execution mode. A model may play different roles across sessions, but changing label never grants permissions or makes its own result independent. Review separation is by authenticated independent principal and evidence provenance, not model name or session ID. Human approval remains a human role. A generalist may propose work and execute it when authorized, not approve its own output. Operator can configure defaults and later custom role profiles within hard limits. No mandatory proprietary model or central planner service. Supported topology experiments: homogeneous generalists, one planner with many workers, competing planner proposals and replaceable planning role. Multiple specialized planner teams and subcolonies/federation are later options, not alpha requirements.
 
 ## Functional hierarchy, decentralized execution
 
@@ -38,6 +38,10 @@ Use a single admitted planning revision writer per goal revision at a time (shor
 ## Knowledge and progress graph
 
 Use existing relational database with typed links rather than introduce graph DB: goal -> criterion, plan -> intent/task, intent -> child intent/task, task -> artifact/evidence, evidence -> criterion/intent, review -> evidence, discovery -> proposed intent. Track provenance and scope, explicit relation types, no circular decomposition links; provenance links can represent a general graph. Query goal coverage by verified criteria and explored/unexplored directions. Distinguish coverage of proposed directions from verified outcome; neither number of tasks nor explored intents is success. Link observations and negative results to intent revisions; retrieval gives planners bounded relevant context including failed approaches and conflicts. Dashboard lists intents with evidence and parent goal, and later graph visualizes lineage. No raw model private reasoning; show human-readable rationale, decisions and observed events.
+
+## Operational interpretation
+
+Role labels are distinct from execution modes (Visitor, external polling worker, Pulse-managed runner). The planner lease controls admission of a planning revision, not every worker action. A task can be direct if no exploration needed. Intent resolution with refuted/inconclusive outcome is legitimate useful work; preserve evidence and avoid repeated attempts unless new evidence justifies them. Expose explicit parent/child and criterion links, revision invalidation and no self-review; see [22](22-execution-contracts.md). Human may admit/reject/edit a proposal under configured policy; no scope expansion through planning.
 
 ## Integration contracts (draft)
 

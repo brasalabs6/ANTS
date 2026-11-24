@@ -1,6 +1,6 @@
 # 19 — Guardrails and human approvals
 
-Status: v0.5 proposed normative MVP requirement, extends 06, 14, 17, 18. Human control is enforced by the application and execution boundary, not by prompts or UI.
+Status: v0.7 proposed normative MVP requirement, extends 06, 14, 17, 18. Human control is enforced by the application and execution boundary, not by prompts or UI.
 
 ## Policy
 
@@ -10,7 +10,11 @@ Versioned constitution and guardrail policy, scoped by organization/colony/goal/
 
 Approval request: org_id, colony_id, goal/task/run IDs and revisions, actor/session, request ID, policy revision/hash, action kind, canonical parameters hash, target/environment, scope, rationale, risk/impact, estimated cost, evidence refs, created/expires, status pending/approved/rejected/expired/revoked/consumed, decision principal/time/reason, version. Server generates from structured intent after policy evaluation; not arbitrary command from board. UI displays exact action, relevant diff and uncertainty; reject or request revision with reason. Only authorized human principal may approve human-gated request; cannot self-approve as agent. No blanket reusable approval; scoped to specific action hash and target, single use, short TTL. Approval is not execution success. Rejection blocks that intent; alternate safe work may continue. No retries to pressure operator or split action to evade approval. Expiry defaults to no execution. A changed action requires new request.
 
-Atomic consume: authenticate runner/action caller; lock applicable mission/goal/policy/approval and budget state in documented order; recheck active revision, scope, deadline, approval hash, expiry, revocation, lease/fence, budget and policy decision; consume approval and persist idempotent execution intent; commit. Enforced gateway/sandbox performs only bound action with scoped capability, checks current revocation before execution. Reconcile uncertain external effect; do not blindly retry. Pause/cancel/revoke prevents new authorization, invalidates unused grants and pending run intents; already performed effects cannot be undone automatically. Revocation race with external execution documented and minimized.
+Atomic consume: authenticate runner/action caller; lock applicable scope and budget state in [22](22-execution-contracts.md) canonical order; recheck active revision, scope, deadline, approval hash, expiry, revocation, lease/fence, budget and policy decision; consume approval and persist idempotent execution intent; commit. Enforced gateway/sandbox performs only bound action with scoped capability, checks current revocation before execution. Reconcile uncertain external effect; do not blindly retry. Pause/cancel/revoke prevents new authorization, invalidates unused grants and pending run intents; already performed effects cannot be undone automatically. Revocation race with external execution documented and minimized.
+
+## Policy evaluation and stop semantics
+
+Evaluate hard deny and scope first; then required approval; then allow. If multiple applicable policies disagree, most restrictive wins (deny > require_approval > allow); missing necessary scope or unclassified controlled action is deny. No human approval overrides hard platform deny. Distinguish approval of plan strategy, independent review of artifact, criterion verification and controlled action grant; one is not automatically the other. A pending/rejected action blocks that exact intent while independent authorized work proceeds. A colony-wide pause blocks all affected claims/dispatch and invalidates grants, persisted across restart. Resume requires operator and fresh authority; no automatic restart after cancellation. Track effect status separately from decision and disclose uncertain external outcome. Scope approval to immutable action hash, policy/goal/task/run revision and expiry; changes require new request. Keep audit reason, actor, old/new revision. See [22](22-execution-contracts.md).
 
 ## Integration boundaries
 

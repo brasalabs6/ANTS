@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "illustrative": true,
+  "mode": "guided",
+  "rules": [
+    {
+      "action": "workspace:read",
+      "decision": "allow"
+    },
+    {
+      "action": "workspace:write_isolated",
+      "decision": "allow"
+    },
+    {
+      "action": "test:run_local",
+      "decision": "allow"
+    },
+    {
+      "action": "release:publish",
+      "decision": "require_approval"
+    },
+    {
+      "action": "production:modify",
+      "decision": "require_approval"
+    },
+    {
+      "action": "unrelated_secret:read",
+      "decision": "deny"
+    }
+  ],
+  "defaultControlledAction": "deny",
+  "maxConcurrentSessions": 2,
+  "budgetMicros": "20000000",
+  "currency": "USD",
+  "pulseEnabled": false,
+  "notes": "Draft illustration, no deployed configuration or authorization; actual target/workspace scope required."
+}

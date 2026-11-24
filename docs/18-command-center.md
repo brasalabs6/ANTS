@@ -1,6 +1,6 @@
 # 18 — Command Center: human operation and observability
 
-Status: v0.5 proposed MVP baseline. Extends 08, 13–17. Browser is optional at runtime; a functional operator dashboard is required for the initial public product release. Headless deployments remain fully supported. No implementation exists yet.
+Status: v0.7 consolidated design baseline. Extends 08, 13–17. Browser is optional at runtime; a functional operator dashboard is required for the initial public product release. Headless deployments remain fully supported. No implementation exists yet.
 
 ## Principle
 
@@ -13,17 +13,19 @@ Agent-first does not mean human-excluded. One operator typically governs many au
 | Overview | colony state, active goal, verified criteria, runnable/blocked work, active sessions, pending approvals, budget and last event |
 | Goals | create/activate/pause/cancel, criteria and evidence, blockers, revisions, evaluation history, completion gate |
 | Plans | revisioned agent/human proposals, rationale, goal criteria links, dependencies, alternatives, approval policy, change diff |
+| Intents | exploratory direction, hypothesis, parent lineage, evidence, state/outcome and filters |
 | Tasks | Kanban and accessible list, filters by goal/plan/agent/priority, dependency and lease detail, checkpoint/evidence, authorized create/reprioritize/cancel/reopen |
 | Swarm | agent identity vs session, provider/model when known, last heartbeat, current claim, runner, observed status, session history, revoke/stop managed run |
 | Blackboard | typed threaded posts, discoveries, blockers, questions, negative results and links |
 | Memory | searchable claims, provenance, verified/disputed/superseded states, artifacts and checkpoints |
 | Approvals | pending requests, exact action/diff, justification, scope, cost/impact, evidence, expiry, approve/reject with reason |
 | Guardrails | constitution/policy revisions, allowed capabilities, action approval rules, budgets, schedule, concurrency, runner/workspace restrictions, pause and revoke |
+| Pulse | schedule, authorized runner, queued/running attempts, blockers, cost, stop controls |
 | Activity | chronological audited state changes and event replay, filter by actor/goal/task/run, sanitized logs |
 
 Dependency graph, timeline and detailed run visualization complement Kanban; an accessible list is always available. Graph can follow MVP if needed, but plan/task relationships and dependency status must already be visible. No fabricated online status or completion percentages. Counts derived from authorized persisted state, distinguish last known vs live, proposed vs verified.
 
-## Intents and roles (v0.6)
+## Intents and roles
 
 Expose an Intents list/filter with hypothesis, parent goal/plan, linked tasks, evidence, resolution and blockers. Swarm view distinguishes authorized role, capability, model and current session. Plans show alternatives and revision lineage. Add a provenance graph as an enhancement; list views remain accessible. Human admission/role changes are authenticated commands and cannot bypass guardrails. See [20](20-intents-and-agent-roles.md).
 
@@ -37,11 +39,15 @@ Columns: Proposed, Ready, In progress, Blocked, In review, Done, plus archived/c
 
 ## Operator modes
 
-Observe-only: no mutations. Guided: operator chooses which plan/goal/action classes require approval. Autonomous within policy: ordinary work proceeds without prompts; explicit sensitive actions still require configured approval, forbidden actions remain forbidden. These are UX presets, not permission escalation. Server policy default deny for unclassified external side effects and unenforceable actions; no unrestricted mode. Mode switch is an authorized versioned policy change, not an agent choice. Human may post a correction, request investigation, revise plan, adjust priority, pause goal/colony, stop authorized run, revoke agent or reject result. No silent alteration of accepted evidence. Resume requires explicit authorization where stopped by operator.
+Observe-only is a UI/role read-only view, not a scheduler pause; display actual host state. Guided: operator chooses which plan/goal/action classes require approval. Autonomous within policy: ordinary work proceeds without prompts; explicit sensitive actions still require configured approval, forbidden actions remain forbidden. These are UX presets, not permission escalation. Server policy default deny for unclassified external side effects and unenforceable actions; no unrestricted mode. Mode switch is an authorized versioned policy change, not an agent choice. Human may post a correction, request investigation, revise plan, adjust priority, pause goal/colony, stop authorized run, revoke agent or reject result. No silent alteration of accepted evidence. Resume requires explicit authorization where stopped by operator.
 
 ## UX and transport
 
 TypeScript + Vite, framework selection remains pending. Reuse typed contracts and server-side policy. Layout: colony switcher, left navigation, main workspace, optional detail drawer; prominent persistent pause control and pending approval count. Local server should serve built static dashboard assets from same origin when packaging spike succeeds; separate static bundle fallback is acceptable, no external CDN required for offline local use. Default loopback, authenticated operator session, CSRF protection, TLS remotely, no credential in URL or browser localStorage. Use scoped SSE with replay cursor and snapshot reconciliation, bounded batches, pagination, virtualization for long boards, stale/disconnected indicator, no fake optimistic success for consequential actions. No browser tab required for scheduler. Human-readable activity derived from typed events, no private model reasoning or raw secrets. Sanitized previews, artifact ACL, accessible keyboard/navigation and contrast. Dashboard can be disabled for headless installations. CLI provides equivalent governance actions with explicit profile/scope.
+
+## Navigation and product identity
+
+Persistent sidebar: Overview, Goals, Plans, Intents, Tasks, Swarm, Blackboard, Memory, Approvals, Guardrails, Pulse, Activity. Goal -> plan -> intent/task -> checkpoint/artifact/review -> criterion is navigable both directions, with lineage and exact versions. UI uses brand tokens from [21](21-project-context.md), accessible contrast; optional ant/goblin theme is non-MVP. Exploration Graph visually shows goal/intent/task/evidence links later; core list relationships available in alpha. Do not display private chain-of-thought; show source-linked rationale and observed activity. One operator typical, no human project portfolio expansion. Use [08](08-frontend.md) for UI route/transport details and [22](22-execution-contracts.md) for state mapping.
 
 ## Release gate
 

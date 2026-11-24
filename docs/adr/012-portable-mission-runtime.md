@@ -1,10 +1,10 @@
 # ADR-012 — Portable mission runtime, CLI-first
 
-Status: proposed implementation baseline, supersedes conflicting v0.1 architecture and roadmap. Date: 2026-11-24.
+Status: retained design decision, clarified by ADR-013/015/017. Historical v0.2 proposal; active baseline v0.7. Date: 2026-11-24.
 
 Context: users already bring agents; friction from MCP setup and lost context. ANTS must focus on constitution-driven collective mission continuity rather than overlap with general project/task management. A local runtime must not require a cloud stack.
 
-Decision: TypeScript on Bun; compile the CLI/server entrypoint via bun build --compile; SQLite via bun:sqlite for local mode; Bun.serve HTTP; optional Vite UI; PostgreSQL and object storage adapters for later cloud. Keep pure domain and application ports runtime-independent where practical. CLI first, HTTP second, optional MCP/SDK after core. Pulse is opt-in scheduler with explicit runner permissions, stop conditions and budgets. No P2P consensus in MVP.
+Decision: TypeScript on Bun; compile the CLI/server entrypoint via bun build --compile; SQLite via bun:sqlite for local mode; Bun.serve HTTP; Vite UI required for public alpha, optional at runtime (ADR-015); PostgreSQL and object storage adapters for later cloud. Keep pure domain and application ports runtime-independent where practical. CLI and HTTP share one service contract; optional MCP/SDK after core (ADR-013). Pulse is opt-in scheduler with explicit runner permissions, stop conditions and budgets. No P2P consensus in MVP.
 
 Alternatives: Node SEA (viable but packaging requires separate validation); Go/Rust (portable binaries but violates current TypeScript decision); Docker/Postgres-only (too much onboarding friction); browser-first SaaS (weak fit for terminal agents).
 

@@ -14,3 +14,15 @@ body:
       label: Acceptance tests, dependencies and security considerations
     validations:
       required: true
+
+  - type: input
+    id: traceability
+    attributes:
+      label: R milestone and PR requirement IDs
+      placeholder: R01 / PR-02, PR-03
+    validations:
+      required: true
+  - type: textarea
+    id: checkpoint
+    attributes:
+      label: Prior attempts, blockers and next safe step

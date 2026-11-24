@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
   title: ANTS API (draft subset)
-  version: 0.1.0
+  version: 0.7.0
 servers:
-  - url: http://localhost:3000/v1
+  - url: http://127.0.0.1:7337/v1
 security:
   - bearerAuth: []
 paths:
@@ -23,6 +23,40 @@ paths:
                 $ref: '#/components/schemas/Mission'
         '404':
           $ref: '#/components/responses/Problem'
+  /orgs/{orgId}/colonies/{colonyId}/missions/{missionId}/goals/{goalId}:
+    parameters:
+      - $ref: '#/components/parameters/orgId'
+      - $ref: '#/components/parameters/colonyId'
+      - $ref: '#/components/parameters/missionId'
+      - name: goalId
+        in: path
+        required: true
+        schema: {type: string, format: uuid}
+    get:
+      operationId: getGoal
+      responses:
+        '200':
+          description: Authorized goal status (draft subset)
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Goal'}
+        '401': {$ref: '#/components/responses/Problem'}
+        '404': {$ref: '#/components/responses/Problem'}
+  /orgs/{orgId}/colonies/{colonyId}/missions/{missionId}/context:
+    parameters:
+      - $ref: '#/components/parameters/orgId'
+      - $ref: '#/components/parameters/colonyId'
+      - $ref: '#/components/parameters/missionId'
+    get:
+      operationId: getContext
+      responses:
+        '200':
+          description: Bounded authorized context (draft envelope, see execution contracts)
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Context'}
+        '401': {$ref: '#/components/responses/Problem'}
+        '404': {$ref: '#/components/responses/Problem'}
   /orgs/{orgId}/colonies/{colonyId}/missions/{missionId}/tasks/{taskId}/claim:
     parameters:
       - $ref: '#/components/parameters/orgId'
@@ -46,10 +80,12 @@ paths:
             schema:
               type: object
               additionalProperties: false
-              required: [sessionId, missionRevision]
+              required: [sessionId, missionRevision, goalId, goalRevision]
               properties:
                 sessionId: {type: string, format: uuid}
                 missionRevision: {type: integer, minimum: 1}
+                goalId: {type: string, format: uuid}
+                goalRevision: {type: integer, minimum: 1}
       responses:
         '200':
           description: Lease granted
@@ -71,12 +107,65 @@ components:
   schemas:
     Mission:
       type: object
-      required: [id, goal, revision, state]
+      required: [id, purpose, revision, state]
       properties:
         id: {type: string, format: uuid}
-        goal: {type: string}
+        purpose: {type: string}
         revision: {type: integer, minimum: 1}
         state: {type: string, enum: [draft, active, paused, completed, cancelled]}
+    Goal:
+      type: object
+      required: [id, objective, revision, status, criteria]
+      properties:
+        id: {type: string, format: uuid}
+        objective: {type: string}
+        revision: {type: integer, minimum: 1}
+        status: {type: string, enum: [draft, active, verifying, blocked, paused, exhausted, succeeded, cancelled, failed]}
+        criteria:
+          type: array
+          items:
+            type: object
+            required: [id, required, state]
+            properties:
+              id: {type: string}
+              required: {type: boolean}
+              state: {type: string, enum: [unknown, pass, fail, stale]}
+              evidenceRefs: {type: array, items: {type: string}}
+        stopReason: {type: [string, 'null']}
+        nextEvaluationAt: {type: [string, 'null'], format: date-time}
+    Context:
+      type: object
+      description: Draft minimum envelope; complete sections specified in 22-execution-contracts.md
+      required: [schemaVersion, scope, constitution, cursor, asOf, truncated]
+      properties:
+        schemaVersion: {type: integer, minimum: 1}
+        scope: {type: object}
+        constitution: {type: object}
+        cursor: {type: string, pattern: '^[0-9]+      type: object
+      required: [taskId, sessionId, fence, expiresAt]
+      properties:
+        taskId: {type: string, format: uuid}
+        sessionId: {type: string, format: uuid}
+        fence: {type: string, pattern: '^[1-9][0-9]*$'}
+        expiresAt: {type: string, format: date-time}
+    Problem:
+      type: object
+      required: [type, title, status]
+      properties:
+        type: {type: string}
+        title: {type: string}
+        status: {type: integer}
+        detail: {type: string}
+        requestId: {type: string}
+  responses:
+    Problem:
+      description: RFC 9457 problem
+      content:
+        application/problem+json:
+          schema: {$ref: '#/components/schemas/Problem'}
+}
+        asOf: {type: string, format: date-time}
+        truncated: {type: boolean}
     Lease:
       type: object
       required: [taskId, sessionId, fence, expiresAt]

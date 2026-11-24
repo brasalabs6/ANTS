@@ -1,6 +1,6 @@
 # Research references and design traceability
 
-Reviewed source pointers (2026-11-24). Primary sources preferred; hypotheses and design proposals are not validated results. References are links, not bundled copies.
+Source pointers carried forward from earlier research (2026-11-24); bibliographic metadata and external URL availability must be reverified before publication. This consolidation did not re-audit external papers or withdrawn repositories. Primary sources preferred; hypotheses and design proposals are not validated results. References are links, not bundled copies.
 
 | Source | Application in ANTS | Limit / status |
 |---|---|---|
@@ -16,11 +16,32 @@ Reviewed source pointers (2026-11-24). Primary sources preferred; hypotheses and
 | [METR / Redwood independent investigation (2026)](https://evals.alignment.org/blog/2026-08-26-openai-hugging-face-incident-investigation/) | separate sessions coordinated through shared state; threat modeling | bounded investigation, does not establish consciousness |
 | [OpenAI, Where the goblins came from (2026)](https://openai.com/index/where-the-goblins-came-from/) | playful brand inspiration only | training behavior unrelated to collective agency |
 
+## Additional context and reading queue
+
+| Reference | Relevance / limits |
+|---|---|
+| [Hearsay-II retrospective, 1977](https://ijcai.org/proceedings/1977/191) and [blackboard model, 1986](https://onlinelibrary.wiley.com/doi/abs/10.1609/aimag.v7i2.537) | shared problem-solving space; earlier distributed blackboard work, not direct LLM proof |
+| [Distributed Blackboard Architecture](https://wrap.warwick.ac.uk/id/eprint/60787/) | historical distributed state; verify thesis metadata |
+| [Group Agency, List & Pettit](https://doi.org/10.1093/acprof:oso/9780199591565.001.0001) and [Cognition in the Wild, Hutchins](https://mitpress.mit.edu/9780262581462/cognition-in-the-wild/) | collective organizational agency and distributed cognition; not consciousness |
+| [AgentNet preprint](https://arxiv.org/abs/2504.00587) | decentralized roles/coordination; verify publication version |
+| [DeLM preprint lead](https://arxiv.org/abs/2606.10662), [DecentMem preprint lead](https://arxiv.org/abs/2605.22721) | shared context and decentralized memory; unverified bibliographic leads in this audit |
+| [Stigmergy modelling and control](https://pmc.ncbi.nlm.nih.gov/articles/PMC11371424/), [robot swarm behaviors](https://www.nature.com/articles/s44172-024-00175-7) | coordination through traces, separate from LLM experiments |
+| [Codex Goals](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex) | thread-scoped persistent goal; ANTS colony-scoped analogue |
+| [ARTEX historical analysis](https://strandintelligence.com/blog/anatomy-of-artex-infrastructure-indicators-and-implications) | generic intent/planner/worker and dashboard inspiration; secondary source, no offensive features or code adopted |
+| [Leonida historical issue #9522](https://github.com/ItsNotRexed/Leonida/issues/9522) | crowd coordination via issue/PR; original unavailable in prior review; do not infer agent count or audit code |
+| [Gradient Institute analysis lead](https://www.gradientinstitute.org/research-publications/when-single-ai-agents-become-a-swarm) | emergent coordination risks; verify availability and metadata |
+
+Further implementation leads from earlier discussion, not audited dependencies: [bMAS](https://github.com/arvarik/bmas), [Stigmergic Blackboard Protocol](https://github.com/Xopher00/stigmergic-blackboard-protocol), [Marcus AI Orchestrator](https://github.com/changquan/marcus-ai-orchestrator), [Decentralized Multi-Agent](https://github.com/geeknees/decentralized-multi-agent), [Agent Comms](https://github.com/pbroom/agent-comms). Verify repository existence/licenses before reuse. OpenAI Swarm handoffs are not the durable colony model; distinguish from Agents SDK. Study references as conceptual inspiration; no exact incident statistics or performance claims relied on by implementation. Historical counts from earlier discussions not independently verified in this audit.
+
 ## Implementation references
 
-[Vite](https://vite.dev/guide/), [Fastify TypeScript](https://fastify.dev/docs/latest/Reference/TypeScript/), [pnpm workspaces](https://pnpm.io/workspaces), [PostgreSQL SELECT / locking](https://www.postgresql.org/docs/current/sql-select.html), [PostgreSQL RLS](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [MCP specification](https://modelcontextprotocol.io/specification/), [OpenAPI](https://spec.openapis.org/oas/latest.html), [OpenTelemetry](https://opentelemetry.io/docs/), [NATS JetStream](https://docs.nats.io/nats-concepts/jetstream), [OWASP API Security](https://owasp.org/www-project-api-security/). Confirm supported versions at implementation time.
+[Bun standalone executables](https://bun.sh/docs/compiler/executables), [Bun SQLite](https://bun.sh/docs/runtime/sqlite), [SQLite FTS5](https://www.sqlite.org/fts5.html), [Vite](https://vite.dev/guide/), historical alternative [Fastify TypeScript](https://fastify.dev/docs/latest/Reference/TypeScript/), [pnpm workspaces](https://pnpm.io/workspaces), [PostgreSQL SELECT / locking](https://www.postgresql.org/docs/current/sql-select.html), [PostgreSQL RLS](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [MCP specification](https://modelcontextprotocol.io/specification/), [OpenAPI](https://spec.openapis.org/oas/latest.html), [OpenTelemetry](https://opentelemetry.io/docs/), [NATS JetStream](https://docs.nats.io/nats-concepts/jetstream), [OWASP API Security](https://owasp.org/www-project-api-security/). Confirm supported versions at implementation time.
 
 Related open-source projects for later code review: [AgentNet](https://github.com/zoe-yyx/AgentNet), [Beads](https://github.com/steveyegge/beads), [MCP Agent Mail](https://github.com/Dicklesworthstone/mcp_agent_mail), [OpenAI Swarm](https://github.com/openai/swarm). No code copied or audited; verify licenses before reuse.
+
+## Experimental evidence and transfer
+
+Use [experiment report template](experiment-template.md) for matched-budget baselines, negative outcomes, immutable artifact hashes and verified evidence. Current status: no ANTS experimental results. [16](../16-colony-client-and-research.md) describes the Plane transfer boundary; [23](../23-requirements.md) tracks required acceptance. Product origin and decisions in [21](../21-project-context.md).
 
 ## Interpretation
 
