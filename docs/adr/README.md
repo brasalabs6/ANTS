@@ -1,6 +1,6 @@
 # Architecture decision records
 
-> Current decision: [ADR-012 — Portable mission runtime, CLI-first](012-portable-mission-runtime.md) supersedes conflicting runtime, storage and integration priorities.
+> Current decisions: [ADR-012 — Portable mission runtime](012-portable-mission-runtime.md) and [ADR-013 — Agent-first client/server and research boundary](013-client-server-and-research.md). ADR-013 clarifies CLI client, server and runner roles; no required local hosting or Plane dependency.
 
 Proposed decisions; review before coding. Record new ADRs rather than silently changing old ones.
 

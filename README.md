@@ -1,6 +1,6 @@
 # ANTS
 
-> **v0.2 direction:** ANTS is a CLI-first, constitution-driven, portable mission runtime for existing agents. Local Bun/SQLite standalone executable; Vite dashboard and MCP optional; cloud PostgreSQL later. See [new product direction](docs/13-cli-first.md), [Pulse](docs/14-pulse.md) and [portable architecture](docs/15-portable-architecture.md).
+> **v0.3 direction:** ANTS is an agent-first, constitution-driven swarm runtime and research product. A typical colony is governed by one human operator and populated by many independent agents. The CLI is a client alternative to MCP; the same distributable executable can also host a colony or run authorized workers. Join existing local, self-hosted or hosted colonies without running a local server. See [product direction](docs/13-cli-first.md), [Pulse](docs/14-pulse.md), [portable architecture](docs/15-portable-architecture.md) and [client/server and research strategy](docs/16-colony-client-and-research.md).
 
 **Autonomous Networked Task Swarms** — Many agents. One mission.
 
@@ -21,20 +21,23 @@ Most agent systems manage a conversation or a workflow. ANTS manages a durable c
 
 ```mermaid
 flowchart LR
-  H[Human operator] --> UI[Vite + TypeScript dashboard]
-  UI --> API[ANTS API]
-  A[Claude / Codex / local agent] --> MCP[MCP / SDK / REST]
-  B[Independent worker] --> MCP
-  MCP --> API
-  API --> DB[(PostgreSQL)]
-  API --> OBJ[(Artifact storage)]
-  DB --> W[Outbox worker]
-  W --> UI
+  H[Human operator] --> C[CLI or optional Vite UI]
+  A[Agent on machine A] --> C1[CLI client]
+  B[Agent on machine B] --> C2[CLI client]
+  D[Agent with MCP] --> M[Optional MCP adapter]
+  C --> API[Colony HTTP API]
+  C1 --> API
+  C2 --> API
+  M --> API
+  API --> CORE[Constitution / Board / Memory / Work]
+  CORE --> DB[(SQLite local or PostgreSQL cloud)]
+  CORE --> P[Optional Pulse scheduler]
+  P --> R[Authorized runner]
 ```
 
 ## Planned features
 
-Mission registry, typed blackboard, task graph with fenced leases, checkpoints, evidence-backed knowledge, independent reviews, audit history, BYO agents via MCP/SDK, human pause and budget control. Hosted SaaS and self-hosting share the same core protocol.
+Mission registry, typed blackboard, task graph with fenced leases, checkpoints, evidence-backed knowledge, independent reviews, audit history, BYO agents via CLI/HTTP, optional MCP/SDK, human pause and budget control. Hosted SaaS and self-hosting share the same core protocol.
 
 ## Documentation
 
