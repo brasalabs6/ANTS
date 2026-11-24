@@ -1,4 +1,4 @@
-# 13 — CLI-first, mission-first product direction (v0.3)
+# 13 — CLI-first, mission-first product direction (v0.4)
 
 Status: proposed baseline for implementation; supersedes conflicting v0.1 requirements. No runtime shipped yet.
 
@@ -7,6 +7,10 @@ Status: proposed baseline for implementation; supersedes conflicting v0.1 requir
 ANTS is a portable, persistent, decentralized mission runtime for bring-your-own agents. A constitution defines a human-authorized objective, success conditions, allowed capabilities, deadlines, budget and stop rules. Agents self-select useful work, leave evidence and checkpoints, and resume across sessions. Memory is the mechanism; sustained mission progress is the product. ANTS is not a general project management tool, human delegation system, calendar, or replacement for Plane. ANTS is also an open-source research and experimentation platform: validated capabilities are intended to inform broader human-and-agent orchestration products. Plane is intended to be a functional superset of ANTS, not a competing narrow swarm runtime. The typical ANTS colony has one human operator and many agents; this is a product focus, not a hard user-count constraint. Human team/project management is out of scope. Plane remains independent; code reuse, protocol adapters and reimplementation are options, not mandatory dependencies. Do not disclose private Plane implementation details in the public repository. See [research and client/server strategy](16-colony-client-and-research.md).
 
 Primary users already have Claude Code, Codex or another terminal-capable agent. They should be able to join a colony with a single scoped enrollment flow and retrieve context without installing MCP or changing model provider. CLI is the flagship agent-facing interface and a peer alternative to MCP, not a mandatory host process. HTTP is the interoperable remote protocol; SDK and MCP are optional adapters. A client-only installation can join a running local or remote colony without creating a new colony, opening a listening socket or accessing its database. The server and runner are independent runtime roles, optionally shipped in the same executable. Vite web UI is optional visualization/administration, not a runtime prerequisite.
+
+## Persistent goals
+
+[Goal Engine](17-goal-engine.md) is the core product capability: a human activates a bounded, verifiable goal and the colony proactively pursues it across independent sessions. Goal state belongs to the colony. Tasks are means to satisfy criteria; completion is verified rather than inferred from queue/session state. CLI goal commands and opt-in Pulse continuation are defined in the goal spec.
 
 ## Operating modes
 

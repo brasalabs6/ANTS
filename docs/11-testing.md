@@ -30,3 +30,7 @@ Generation test: terminate every worker and context at fixed boundaries; keep on
 ## Research transfer (v0.3)
 
 Record the hypothesis, baseline, immutable constitution revision, model/adapter versions, workload and seed, budgets, configuration, protocol version, artifact hashes, outcome and negative results for each experiment. Store sanitized reproducible fixtures and a capability assessment (experimental / validated in ANTS / candidate for transfer) rather than claiming general readiness. Validate client-only joins and model-independent continuity. See [16 — Research strategy](16-colony-client-and-research.md). A larger human-agent orchestration platform must repeat security, scale and mixed-participant tests in its own environment before adoption.
+
+## Goal Engine acceptance (v0.4)
+
+[Goal specification](17-goal-engine.md) defines the mandatory proactive end-to-end demo: activate once, plan, work, fail verification, recover/replan across session replacement, then verify and succeed without further human continuation prompts. Test empty queue, stale/tampered evidence, false completion, no runner, pause, budget and deadline, reconciliation dedup and restart. Compare verified completion and human intervention count against passive board and single-agent goal baseline under equal limits.

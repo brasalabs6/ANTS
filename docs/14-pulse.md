@@ -2,6 +2,10 @@
 
 Pulse is a deterministic scheduler, not an LLM supervisor. It starts bounded work cycles only for operator-registered runners and active constitutions. External agents may also pull work without Pulse. Do not attempt to awaken a closed chat or third-party process lacking a supported authorized execution interface.
 
+## Goal-driven dispatch (v0.4)
+
+[Goal Engine](17-goal-engine.md) reconciles pending criteria and issues durable, bounded requests for planning, work or verification. Pulse dispatches only eligible authorized intents; it does not decide success. An empty queue can trigger goal gap analysis, not automatic completion. Stop new dispatch on goal success, pause, cancellation, exhaustion or invalid revision; reconcile pending and running sessions. No runner availability means visibly blocked/waiting. Existing schedule, approval, budget and sandbox limits apply.
+
 ## Runner types
 
 Visitor: interactive existing agent calls CLI. Worker: externally managed polling client. Pulse runner: registered local/remote adapter that invokes a supported noninteractive agent with its own authorized credentials and sandbox. Candidate adapters: Codex exec, Claude Code print mode, custom fixed executable. Verify installed version and documented options; never bypass approvals or sandbox. See https://learn.chatgpt.com/docs/developer-commands and https://code.claude.com/docs/en/headless.

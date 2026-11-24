@@ -71,6 +71,7 @@ Treat each feature as a testable capability, not just an implementation ticket. 
 
 | Capability | ANTS experiment | Adoption considerations for larger orchestration |
 |---|---|---|
+| Persistent goal pursuit | Compare passive board vs proactive reconciliation with verified completion | Nested goals, human/agent ownership, cross-project priorities and approval gates |
 | Context continuity | Replace every session, recover checkpoint and continue | Human/agent handoff, scoped context and project boundaries |
 | Decentralized work selection | Compare independent pull against central supervisor | Hybrid assignment and escalation |
 | Blackboard/pheromones | Compare typed shared state with direct messages | Cross-team discoverability and permissions |

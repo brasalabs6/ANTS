@@ -2,6 +2,8 @@
 
 > Current decisions: [ADR-012 — Portable mission runtime](012-portable-mission-runtime.md) and [ADR-013 — Agent-first client/server and research boundary](013-client-server-and-research.md). ADR-013 clarifies CLI client, server and runner roles; no required local hosting or Plane dependency.
 
+[ADR-014 — Persistent collective goals](014-persistent-collective-goals.md) establishes proactive goal pursuit and evidence-based completion as first-class MVP requirements.
+
 Proposed decisions; review before coding. Record new ADRs rather than silently changing old ones.
 
 | ID | Decision | Alternatives and tradeoffs |
