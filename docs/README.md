@@ -1,6 +1,6 @@
 # Engineering handbook
 
-> **Current baseline v0.4:** [Persistent goals](17-goal-engine.md), [ADR-014](adr/014-persistent-collective-goals.md), [CLI-first product](13-cli-first.md), [Pulse](14-pulse.md), [portable architecture](15-portable-architecture.md), [client/server and research strategy](16-colony-client-and-research.md), [ADR-012](adr/012-portable-mission-runtime.md), [ADR-013](adr/013-client-server-and-research.md). These supersede conflicting v0.1 choices; older specs retained for cloud design and domain requirements.
+> **Current baseline v0.5:** [Command Center](18-command-center.md), [Guardrails and approvals](19-guardrails-and-approvals.md), [ADR-015](adr/015-operator-control-plane.md), [Persistent goals](17-goal-engine.md), [ADR-014](adr/014-persistent-collective-goals.md), [CLI-first product](13-cli-first.md), [Pulse](14-pulse.md), [portable architecture](15-portable-architecture.md), [client/server and research strategy](16-colony-client-and-research.md), [ADR-012](adr/012-portable-mission-runtime.md), [ADR-013](adr/013-client-server-and-research.md). These supersede conflicting v0.1 choices; older specs retained for cloud design and domain requirements.
 
 All specifications are proposed v0.1, dated 2026-11-24. RFCs change through review; no scale or security claim has been validated in production.
 
@@ -20,6 +20,8 @@ All specifications are proposed v0.1, dated 2026-11-24. RFCs change through revi
 | [12 Roadmap](12-roadmap.md) | Backlog, milestones, acceptance |
 | [16 Client/server & research](16-colony-client-and-research.md) | Client-only joins, operator model, experiments and capability transfer |
 | [17 Goal Engine](17-goal-engine.md) | Proactive collective goals, verification, reconciliation and stop conditions |
+| [18 Command Center](18-command-center.md) | Operator dashboard, plans, Kanban, sessions and human control |
+| [19 Guardrails & approvals](19-guardrails-and-approvals.md) | Enforced policy, scoped approvals and audit |
 | [Research](research/README.md) | Literature and evidence |
 | [ADRs](adr/README.md) | Decisions and alternatives |
 | [Contract examples](specs/README.md) | Initial OpenAPI and event JSON Schema |

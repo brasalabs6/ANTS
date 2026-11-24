@@ -20,6 +20,10 @@ Run states pending -> leased -> running -> succeeded/failed/cancelled/expired. D
 
 Pause transaction invalidates leases and pending intents; terminate managed process group within grace period and reconcile actual cost. Remote workers receive revocation; ANTS cannot guarantee their external compute stops. No agent may restart Pulse, alter constitution, increase budget or expand access. Operator explicitly resumes with current revision. Service installation or OS autostart is opt-in.
 
+## Human intervention (v0.5)
+
+Dispatch and controlled effects must honor [guardrails and approvals](19-guardrails-and-approvals.md). A pending approval blocks its specific intent, not independent authorized work. Operator rejection/expiry denies that intent; pause/revoke invalidates pending grants and dispatch. UI is not the enforcement boundary.
+
 ## Security
 
 Local runner is not a sandbox by itself. Production unattended execution requires verified OS/container isolation, network/file restrictions, resource caps, scoped credentials, explicit tool allowlists and approvals for sensitive side effects. Do not run untrusted code with host privileges. Manual visitor mode can ship before Pulse. Support deterministic mock runner for testing before real model adapters.

@@ -4,6 +4,10 @@
 
 Vite + TypeScript SPA for the product. Vite is the development server and build tool, not a UI framework. UI framework (or vanilla TypeScript), routing, local state and server-cache libraries are pending a separate decision before scaffolding; Vue and its ecosystem are not selected. Keep typed API clients, tenant-aware cache invalidation, SSE lifecycle, shared design tokens and reusable UI components independent of that choice where practical. Public landing/docs static initially; add SSR only for measurable SEO needs. No business authority in browser. API contracts generated from schemas. Lazy route chunks, accessible semantic HTML, keyboard navigation, reduced motion, responsive layouts, i18n English/pt-BR later.
 
+## v0.5 operator baseline
+
+[Command Center](18-command-center.md) supersedes any interpretation of the dashboard as a later optional product feature. It is required for public alpha, optional for runtime. Implement goals, revisioned plans, Kanban/list, agent sessions, approval inbox, guardrails, board and memory. [Guardrails](19-guardrails-and-approvals.md) defines server-enforced decisions. Vite/TypeScript remains selected; UI framework remains pending.
+
 ## Routes
 
 `/` landing; `/login`; `/org/:orgId` organization; `/org/:orgId/colonies/:colonyId/overview`; `/missions/:missionId` nested tabs board/tasks/knowledge/artifacts/reviews; `/agents`; `/settings`; `/usage`; `/audit`. Deep links preserve scope. Empty/error/offline states and 403/404 views. URL filters shareable; no secret query strings. Tenant switch clears query cache and closes SSE.

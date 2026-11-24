@@ -4,6 +4,8 @@
 
 [ADR-014 — Persistent collective goals](014-persistent-collective-goals.md) establishes proactive goal pursuit and evidence-based completion as first-class MVP requirements.
 
+[ADR-015 — Human operator control plane](015-operator-control-plane.md) requires a usable dashboard and enforced approvals for public alpha.
+
 Proposed decisions; review before coding. Record new ADRs rather than silently changing old ones.
 
 | ID | Decision | Alternatives and tradeoffs |
