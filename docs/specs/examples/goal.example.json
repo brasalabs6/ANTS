@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "title": "CSV to JSON CLI",
+  "objective": "Implement a local CLI that converts the approved CSV fixtures into valid JSON.",
+  "criteria": [
+    {
+      "id": "parse-fixtures",
+      "description": "All approved fixtures produce expected JSON",
+      "required": true,
+      "verifierKind": "trusted_test",
+      "verifierRef": "fixture-suite-v1"
+    },
+    {
+      "id": "independent-review",
+      "description": "Independent reviewer confirms reproducible output",
+      "required": true,
+      "verifierKind": "independent_review",
+      "verifierRef": "review-rubric-v1"
+    }
+  ],
+  "executionPolicy": {
+    "mode": "mock_runner",
+    "maxConcurrentSessions": 2,
+    "maxSessionSeconds": 300,
+    "maxAttempts": 5,
+    "maxNoProgressAttempts": 2,
+    "budgetMicros": "20000000",
+    "currency": "USD",
+    "deadline": "2026-12-01T00:00:00Z",
+    "allowedRunnerRefs": [
+      "mock-planner",
+      "mock-worker",
+      "mock-reviewer"
+    ]
+  },
+  "notes": "Illustrative draft data only; no run authorized, verifier refs are placeholders, not executable commands."
+}

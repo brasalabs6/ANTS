@@ -1,8 +1,8 @@
 # Engineering handbook
 
-> **Current baseline v0.6:** [Intents and roles](20-intents-and-agent-roles.md), [ADR-016](adr/016-exploration-intents-and-roles.md), [Command Center](18-command-center.md), [Guardrails and approvals](19-guardrails-and-approvals.md), [ADR-015](adr/015-operator-control-plane.md), [Persistent goals](17-goal-engine.md), [ADR-014](adr/014-persistent-collective-goals.md), [CLI-first product](13-cli-first.md), [Pulse](14-pulse.md), [portable architecture](15-portable-architecture.md), [client/server and research strategy](16-colony-client-and-research.md), [ADR-012](adr/012-portable-mission-runtime.md), [ADR-013](adr/013-client-server-and-research.md). These supersede conflicting v0.1 choices; older specs retained for cloud design and domain requirements.
+> **Current baseline v0.7:** [project context](21-project-context.md), [cross-module execution contracts](22-execution-contracts.md), [requirements traceability](23-requirements.md), [development handoff](24-handoff.md), [canonical roadmap](12-roadmap.md), [ADR-017](adr/017-consolidated-specification.md). All active topic specs below form one baseline; historical versions remain in Git.
 
-All specifications are proposed v0.1, dated 2026-11-24. RFCs change through review; no scale or security claim has been validated in production.
+All specifications are design-stage proposals, consolidated 2026-11-24. No runtime implemented. RFCs change through review; no scale or security claim has been validated in production.
 
 | Document | Scope |
 |---|---|
@@ -18,11 +18,18 @@ All specifications are proposed v0.1, dated 2026-11-24. RFCs change through revi
 | [10 Deployment & scale](10-operations.md) | Infra, SLO, backups, migration |
 | [11 Testing & experiments](11-testing.md) | Correctness, benchmarks, continuity |
 | [12 Roadmap](12-roadmap.md) | Backlog, milestones, acceptance |
+| [13 CLI-first](13-cli-first.md) | Agent onboarding, local/remote client and distribution |
+| [14 Pulse](14-pulse.md) | Authorized agent session scheduling |
+| [15 Portable architecture](15-portable-architecture.md) | Bun/SQLite and deployment boundaries |
 | [16 Client/server & research](16-colony-client-and-research.md) | Client-only joins, operator model, experiments and capability transfer |
 | [17 Goal Engine](17-goal-engine.md) | Proactive collective goals, verification, reconciliation and stop conditions |
 | [18 Command Center](18-command-center.md) | Operator dashboard, plans, Kanban, sessions and human control |
 | [19 Guardrails & approvals](19-guardrails-and-approvals.md) | Enforced policy, scoped approvals and audit |
 | [20 Intents & agent roles](20-intents-and-agent-roles.md) | Exploratory directions, specialized roles, functional hierarchy and evidence lineage |
+| [21 Project context](21-project-context.md) | Full product thesis, history, decisions and relationship to Plane |
+| [22 Execution contracts](22-execution-contracts.md) | Cross-module vocabulary, lifecycle, consistency and failure semantics |
+| [23 Requirements](23-requirements.md) | Stable requirements and release acceptance traceability |
+| [24 Handoff](24-handoff.md) | Current state, open decisions, next steps and checkpoint format |
 | [Research](research/README.md) | Literature and evidence |
 | [ADRs](adr/README.md) | Decisions and alternatives |
 | [Contract examples](specs/README.md) | Initial OpenAPI and event JSON Schema |

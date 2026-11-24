@@ -1,0 +1,39 @@
+# 24 — Development handoff and open decisions
+
+Status at v0.7 consolidation (2026-11-24): documentation-only repository. No runnable application, dependency lockfile, schema migrations, tests, CLI binary, dashboard, live SaaS, benchmarks or deployment. The remote Git repository brasalabs6/ANTS, main, is source of truth. Earlier local bundles are historical. This document intentionally does not record private conversations or credentials.
+
+## Start a new session
+
+1. Read root README, AGENTS.md, [21 project context](21-project-context.md), [22 cross-module contracts](22-execution-contracts.md), [23 requirements](23-requirements.md), [12 roadmap](12-roadmap.md) and [ADR index](adr/README.md).
+2. Read relevant numbered specification and current contract examples. Verify actual Git HEAD and working tree; do not assume docs are code. Search open issues/PRs before claiming work. Record any contradiction as a proposed fix rather than silently selecting old behavior.
+3. If asked to begin implementation, start R01: minimal strict TypeScript workspace with Bun CLI, compile spike, SQLite migration/FTS, clean-host test, basic CI and test strategy. Resolve only decisions necessary for the slice; don't scaffold the full SaaS first. No external service creation or paid model call implied.
+4. Work on a scoped branch/PR unless authorized to commit directly to main (the owner authorized direct main updates for this documentation workflow; that is not blanket permission for outside contributors or deployment). Test, record evidence, update docs/contracts and checkpoint. Never overwrite concurrent work. Stop on missing authority or blocked assumptions.
+
+## Open decisions (do not treat these as user choices)
+
+| ID | Question | Current direction / resolution gate |
+|---|---|---|
+| O01 | Bun standalone reliability, binary size, cross-platform and FTS5 | R01 spike, test clean hosts; no claimed support until verified |
+| O02 | pnpm vs Bun workspaces; exact dependencies and CI | pnpm/Turborepo historical baseline, choose one lockfile in R01 with ADR |
+| O03 | UI framework, routing, cache, components | Vite + TS fixed; React was suggested, not selected; decide before UI scaffolding |
+| O04 | Embedded static web assets vs separate bundle | prefer one binary if packaging succeeds; fallback allowed, dashboard still required for alpha |
+| O05 | SQLite adapter/schema tooling, IDs/time types | SQLite local chosen; evaluate typed SQL/migrations; Drizzle candidate, not mandate |
+| O06 | Auth bootstrap, token exchange, rotation, session TTL and local OS keychain | scoped profiles and operator auth required; finalize contract and tests in R02–03 |
+| O07 | Exact REST payloads, event schemas, CLI exits and compatibility | current examples draft, expand slice by slice before v1 stability |
+| O08 | Lease renewal caps, context limits, retry and fairness tuning | baseline suggestions in 22; tune with tests, require explicit unattended limits |
+| O09 | Real runner provider adapters / isolation | verify versions and sandbox/gateway first; mock runner in CI, no unattended release before security gate |
+| O10 | Artifact merge and verifier strategies for concurrent code edits | isolated branches/workspaces, immutable hashes, review; pick adapter and test conflict recovery |
+| O11 | Hosted provider/region/billing/prices/SLO/scale | no provider or price chosen; measured cloud targets only, R08 |
+| O12 | Plane transfer implementation | functional superset goal, no forced library/DB dependency; review evidence and private architecture separately |
+| O13 | License/brand | MIT committed, AGPL alternative not adopted; trademark/domain clearance pending, no unilateral license change |
+| O14 | Research provenance / links | references carried from earlier research, verify titles/authors/URLs before public claims; no repo code copied |
+| O15 | Graph UI, custom roles, multi-goal/federation | later, model preserves lineage; no scope creep in MVP |
+| O16 | Security contact, release signing and distribution | maintainer configure private reporting and signing; verify actual setting before claiming enabled |
+
+## Checkpoint format for development contributors
+
+Use a committed note or issue/PR update: date, HEAD SHA, milestone/requirement IDs, objective, completed changes with paths, decisions and rationale, actual test commands/results, artifacts, failures and risks, remaining tasks/dependencies, next safe step, explicit blockers/owner decisions needed. Preserve earlier evidence and negative attempts. No secrets, raw private conversations, model private reasoning or invented measurements. Update the roadmap and requirement status only when verified. This mirrors the product's own continuity principles.
+
+## Audit boundary
+
+v0.7 consolidates the full prior specification set and conversation decisions; it does not prove the runtime, packaging, security or scalability. External literature and historical incidents are context, not audited implementations. Exact endpoint schemas, production migrations, framework and runner isolation remain engineering work. Keep [21](21-project-context.md) current when product direction changes, [23](23-requirements.md) for traceability, and this file for the actual handoff. The previous baseline commit was 5d227751ef70168ed4ed5bd34fcf2df2a4b3312e. Git history retains pre-consolidation versions.

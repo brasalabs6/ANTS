@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "illustrative": true,
+  "scope": {
+    "orgId": "00000000-0000-4000-8000-000000000001",
+    "colonyId": "00000000-0000-4000-8000-000000000002",
+    "missionId": "00000000-0000-4000-8000-000000000003",
+    "goalId": "00000000-0000-4000-8000-000000000004",
+    "goalRevision": 1
+  },
+  "constitution": {
+    "revision": 1,
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "summary": "Use approved local fixtures; preserve negative results."
+  },
+  "role": "worker",
+  "policySummary": {
+    "mode": "guided",
+    "allowed": [
+      "task:claim",
+      "checkpoint:write",
+      "board:post"
+    ],
+    "approvalRequired": [
+      "release:publish"
+    ]
+  },
+  "criteria": [
+    {
+      "id": "parse-fixtures",
+      "state": "fail",
+      "evidenceRefs": [
+        "fixture-run-1"
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "id": "plan-1",
+      "revision": 1
+    }
+  ],
+  "intents": [
+    {
+      "id": "intent-1",
+      "question": "Determine why quoted fields fail",
+      "state": "exploring"
+    }
+  ],
+  "readyTasks": [
+    {
+      "id": "task-2",
+      "title": "Repair quoted-field handling"
+    }
+  ],
+  "checkpoint": {
+    "summary": "First test run failed on quoted input; inspect parser fixture",
+    "artifactRefs": [
+      "artifact-1"
+    ]
+  },
+  "verifiedClaims": [],
+  "negativeResults": [
+    {
+      "summary": "Naive split fails for quoted fields",
+      "evidenceRefs": [
+        "fixture-run-1"
+      ]
+    }
+  ],
+  "disputedClaims": [],
+  "pendingApprovals": [],
+  "blockers": [],
+  "cursor": "42",
+  "asOf": "2026-11-24T00:00:00Z",
+  "truncated": false,
+  "continuation": null
+}
