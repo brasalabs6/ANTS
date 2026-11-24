@@ -1,5 +1,7 @@
 # 02 — System architecture
 
+> **Supersession notice (v0.2):** [CLI-first product](13-cli-first.md) and [portable architecture / revised roadmap](15-portable-architecture.md) take precedence over conflicting local MVP requirements in this document. Vite UI and MCP are optional; Bun/SQLite single executable first, cloud Postgres later.
+
 ## Decisions
 
 TypeScript end-to-end, Vite + TypeScript for the frontend (UI framework, router and state/cache libraries to be selected before scaffolding; no Vue dependency), Node.js LTS + Fastify, TypeBox/JSON Schema + OpenAPI, PostgreSQL (SQL migrations, typed query layer e.g. Drizzle), S3-compatible private object storage, pnpm workspaces and Turborepo. Use Vitest, Playwright and Testcontainers. Pin exact supported versions when bootstrapping; no runtime dependencies installed in this design repo.

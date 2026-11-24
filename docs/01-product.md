@@ -1,5 +1,7 @@
 # 01 — Product requirements
 
+> **Supersession notice (v0.2):** [CLI-first product](13-cli-first.md) and [portable architecture / revised roadmap](15-portable-architecture.md) take precedence over conflicting local MVP requirements in this document. Vite UI and MCP are optional; Bun/SQLite single executable first, cloud Postgres later.
+
 ## Thesis
 
 A collective can preserve useful progress across replacement of every participant. This is a functional engineering hypothesis, not a claim of consciousness. The colony is durable state plus authorized processes, not a self-preserving autonomous entity. A paused colony cannot schedule or authorize further work.

@@ -1,5 +1,7 @@
 # 12 — Implementation roadmap
 
+> **Supersession notice (v0.2):** [CLI-first product](13-cli-first.md) and [portable architecture / revised roadmap](15-portable-architecture.md) take precedence over conflicting local MVP requirements in this document. Vite UI and MCP are optional; Bun/SQLite single executable first, cloud Postgres later.
+
 No delivery dates promised; sequence by dependencies. Each issue has owner/claim, scope, acceptance tests and review. Use vertical slices, not months of infrastructure-only work.
 
 | ID | Deliverable | Exit condition | Depends on |

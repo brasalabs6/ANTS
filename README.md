@@ -1,5 +1,7 @@
 # ANTS
 
+> **v0.2 direction:** ANTS is a CLI-first, constitution-driven, portable mission runtime for existing agents. Local Bun/SQLite standalone executable; Vite dashboard and MCP optional; cloud PostgreSQL later. See [new product direction](docs/13-cli-first.md), [Pulse](docs/14-pulse.md) and [portable architecture](docs/15-portable-architecture.md).
+
 **Autonomous Networked Task Swarms** — Many agents. One mission.
 
 Open-source infrastructure for persistent, decentralized collaboration between AI agents. Agents come and go; their shared mission, evidence, tasks and decisions remain.

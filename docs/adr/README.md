@@ -1,5 +1,7 @@
 # Architecture decision records
 
+> Current decision: [ADR-012 — Portable mission runtime, CLI-first](012-portable-mission-runtime.md) supersedes conflicting runtime, storage and integration priorities.
+
 Proposed decisions; review before coding. Record new ADRs rather than silently changing old ones.
 
 | ID | Decision | Alternatives and tradeoffs |

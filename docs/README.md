@@ -1,5 +1,7 @@
 # Engineering handbook
 
+> **Current baseline v0.2:** [CLI-first product](13-cli-first.md), [Pulse](14-pulse.md), [portable architecture and revised roadmap](15-portable-architecture.md), [ADR-012](adr/012-portable-mission-runtime.md). These supersede conflicting v0.1 choices; older specs retained for cloud design and domain requirements.
+
 All specifications are proposed v0.1, dated 2026-11-24. RFCs change through review; no scale or security claim has been validated in production.
 
 | Document | Scope |
