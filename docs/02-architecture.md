@@ -1,61 +1,66 @@
 # 02 — System architecture
 
-> **Supersession notice (v0.2):** [CLI-first product](13-cli-first.md) and [portable architecture / revised roadmap](15-portable-architecture.md) take precedence over conflicting local MVP requirements in this document. Vite UI and MCP are optional; Bun/SQLite single executable first, cloud Postgres later.
+> **Active v0.7 baseline:** [project context](21-project-context.md), [cross-module contracts](22-execution-contracts.md) and [requirements](23-requirements.md). This document describes current design, not shipped functionality.
 
 ## Decisions
 
-TypeScript end-to-end, Vite + TypeScript for the frontend (UI framework, router and state/cache libraries to be selected before scaffolding; no Vue dependency), Node.js LTS + Fastify, TypeBox/JSON Schema + OpenAPI, PostgreSQL (SQL migrations, typed query layer e.g. Drizzle), S3-compatible private object storage, pnpm workspaces and Turborepo. Use Vitest, Playwright and Testcontainers. Pin exact supported versions when bootstrapping; no runtime dependencies installed in this design repo.
+TypeScript end-to-end; Bun standalone compilation, Bun.serve, bun:sqlite and local filesystem artifacts for local/self-hosted MVP. Vite + TypeScript for the operator dashboard (UI framework/router/cache libraries pending, no Vue). JSON Schema/OpenAPI; TypeBox and Drizzle are candidates pending spike, not installed dependencies. Workspace pnpm/Turborepo or Bun decision pending R01; use one lockfile. Prefer deterministic unit/integration tests (Bun test or Vitest selection in R01), Playwright browser tests, Testcontainers for later PostgreSQL integration. Hosted adapter: PostgreSQL, private S3-compatible storage, stateless replicas and separate worker deployment. Original Node/Fastify/Postgres-first stack is historical, not a local requirement. Pin exact supported versions when bootstrapping; no runtime dependencies installed.
 
-Start with a modular monolith plus separate worker process, horizontally scalable stateless API, and durable Postgres outbox. No separate broker/Redis required for correctness. Introduce cache, queue or partitioned services only after measured need. One authoritative database per deployment, not P2P; decisions of work selection are decentralized, policy authority remains centralized.
+Start with a modular monolith and independent composition roots for CLI client, host and runner, with durable SQLite event/outbox and scheduler in host. Separate workers and horizontally scalable stateless API are hosted evolution, not mandatory local processes. No separate broker/Redis required for correctness. Introduce cache, queue or partitioned services only after measured need. One authoritative database per deployment, not P2P; decisions of work selection are decentralized, policy authority remains centralized.
 
 ```mermaid
 flowchart TB
-  H[Human browser] --> WEB[Vite SPA / CDN]
-  WEB --> API[Stateless Fastify API]
-  EXT[External workers] --> MCP[MCP transport]
-  MCP --> API
-  EXT --> API
-  API --> AUTH[Identity / authorization]
-  API --> DOMAIN[Mission / Task / Board / Memory / Review]
-  DOMAIN --> PG[(PostgreSQL + outbox)]
-  DOMAIN --> OBJ[(Private object storage)]
-  PG --> WORKER[Outbox / sweeper / projections]
-  WORKER --> SSE[Authorized stream]
-  SSE --> WEB
-  WORKER --> RUNNER[Optional managed sandbox adapter]
+ H[Human CLI / Vite dashboard] --> API[Colony HTTP / SSE]
+ EXT[Independent agent CLI] --> API
+ MCP[Optional MCP / SDK] --> API
+ API --> AUTH[Identity and deterministic policy]
+ AUTH --> CORE[Constitution / Goal / Plan / Intent / Task / Board / Memory / Review]
+ CORE --> STORE[(SQLite local or PostgreSQL hosted)]
+ CORE --> ART[(Private artifact filesystem or object store)]
+ STORE --> RECON[Goal Engine / outbox / projections]
+ RECON --> PULSE[Opt-in Pulse]
+ PULSE --> RUNNER[Authorized runner]
+ RUNNER --> API
+ RECON --> API
 ```
 
 ## Target monorepo (not yet scaffolded)
 
 ```text
-apps/web             Vite + TypeScript application
-apps/api             Fastify composition root / REST / SSE
-apps/worker          outbox, expiry, indexing, scheduled authorized jobs
-apps/mcp             optional separately deployable MCP adapter
-apps/cli             human and external agent bootstrap CLI
-packages/contracts   versioned schemas; generated client types
-packages/domain      pure types, policies, state transitions
-packages/application use cases, ports and transaction boundaries
-packages/db          migrations, repositories, transaction context
-packages/sdk         TypeScript REST/MCP client, retries, checkpoints
-packages/auth        principal/scopes, authorization
-packages/runner      sandbox/provider interfaces and reference adapters
-packages/telemetry   logging, metrics, tracing
-packages/ui          shared design tokens and UI components (framework TBD)
-packages/config      validated configuration, no secrets in source
-infra/               Compose and deployment manifests
-docs/                RFCs, ADRs, protocol and research
+apps/ants             CLI client, host and runner composition roots
+apps/web              Vite + TypeScript Command Center
+packages/contracts    schemas and client types
+packages/domain       pure types, policies and state transitions
+packages/application  use cases, Goal Engine, ports and transactions
+packages/storage-sqlite  local migrations and repositories
+packages/storage-postgres  hosted adapter (later)
+packages/transport-http  HTTP/SSE transport
+packages/cli          client commands, profiles and output
+packages/auth         principal, scopes and authorization
+packages/runner       sandbox/provider interfaces and adapters
+packages/pulse        deterministic scheduling
+packages/sdk          typed REST client (optional later)
+packages/mcp          optional adapter (later)
+packages/telemetry    logging, metrics, tracing
+packages/ui           design tokens and UI components (framework TBD)
+packages/config       validated configuration, no source secrets
+infra/                release/deployment manifests, Compose optional for cloud
+docs/                 specs, ADRs, research and handoff
 ```
 
 Dependencies: apps -> application -> domain; infrastructure implements application ports; contracts and SDK may be used by web and integrations, never import server internals. Domain has no DB/provider imports. Modules own their data writes via explicit use cases; other modules use interfaces/events. Enforce package boundaries in lint/CI. No generic god service, no cross-module direct mutation.
 
 ## Domain modules
 
-Identity/tenancy, colony/mission, agent registry, task scheduling, board/events, artifacts, knowledge/retrieval, validation/review, policy/budget, metering, audit, integrations. Each exposes commands and read models; private implementation can evolve independently. One transaction includes state changes plus outbox row; asynchronous side effects consume at least once. Read projections are rebuildable and never authorize writes.
+Identity/tenancy, colony/constitution/mission, goals/reconciliation, plan admission, exploration intents, agent registry and roles, task claims, board/events, artifacts, knowledge/retrieval, validation/review, policy/approvals/budget, Pulse/runners, metering, audit, integrations. Each exposes commands and read models; private implementation can evolve independently. One transaction includes state changes plus outbox row; asynchronous side effects consume at least once. Read projections are rebuildable and never authorize writes.
 
 ## Extensions
 
 Versioned adapter interfaces: `AgentConnector`, `ModelProvider`, `SandboxRunner`, `ArtifactStore`, `SearchIndex`, `EventPublisher`, `BillingProvider`, `Reviewer`. Capability manifests declare required scopes, limits and version; host validates config; third-party code runs out of process, not imported as arbitrary server plugins. Feature flags scoped to tenant; default off. Backward-compatible schema evolution, deprecation window and contract tests before extraction. Add bounded contexts when ownership and scale justify them (e.g. artifact indexing, managed execution), not one service per table.
+
+## Boundaries and scalability
+
+Host alone owns authoritative state; client-only CLI and runner use versioned HTTP even on same machine while host is serving. No cross-module writes outside application services. Goal Engine owns outcome reconciliation; Pulse owns dispatch; policy engine owns authorization; verifier evaluates approved evidence; no LLM is a source of permission. Browser renders read projections and submits commands; no frontend DB access. Use local transactional outbox and rebuildable views; hosted adapter must pass same behavioral contract tests, plus tenant RLS and load tests. Extract event gateway, indexing, execution or billing only on measured contention/ownership. Keep adapters extensible and third-party code out of process. See [15](15-portable-architecture.md), [22](22-execution-contracts.md).
 
 ## Architecture principles
 

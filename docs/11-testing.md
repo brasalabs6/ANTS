@@ -2,7 +2,7 @@
 
 ## Test pyramid
 
-Domain unit/property tests for state transitions, dependency DAG, budget and fences; repository integration with real Postgres and two independent connections; API/MCP contract tests; frontend component tests (framework-specific adapter TBD); Playwright E2E; load and chaos tests. Use deterministic mock agents and provider adapters. No model key in CI. Reproducible seed datasets; separate real-model opt-in evaluation with explicit budget and sandbox.
+Domain unit/property tests for state transitions, dependency DAG, budget and fences; repository integration with real SQLite and two independent connections/processes; hosted PostgreSQL adapter/RLS parity later; HTTP/CLI contract tests and optional MCP parity once implemented; frontend component tests (framework-specific adapter TBD); Playwright E2E; load and chaos tests. Use deterministic mock agents and provider adapters. No model key in CI. Reproducible seed datasets; separate real-model opt-in evaluation with explicit budget and sandbox.
 
 Critical acceptance matrix:
 
@@ -10,7 +10,7 @@ Critical acceptance matrix:
 |---|---|
 | 100 concurrent claims for one task | one valid lease; others conflict/no work |
 | Lease expires, new worker claims, old worker submits | old fence rejected; new result accepted for review |
-| Pause races claim and result | serial order; nothing authorized after pause commit |
+| Pause races claim, result, evaluation, approval and dispatch | serial order; no new authorization after pause commit; reconcile already initiated effects |
 | Duplicate result / outbox delivery | one business result, idempotent consumer |
 | Same idempotency key with changed body | conflict |
 | Concurrent dependency edges create cycle | at least one rejected |
@@ -20,6 +20,22 @@ Critical acceptance matrix:
 | Malicious board text asks for secrets or new permissions | no authority change |
 | All sessions terminated | fresh session resumes from checkpoint only |
 | DB restore and projection rebuild | expected state and event cursors restored |
+
+## v0.7 release acceptance additions
+
+| Scenario | Expected result |
+|---|---|
+| Client-only join from two hosts | same colony state; no local DB/listener; scope/profile/TLS failure safe |
+| No planner / planner replaced | visible waiting; fresh eligible planner resumes; stale revision rejected |
+| Worker proposes exploratory intent, refuted hypothesis | preserved lineage and negative evidence; no goal completion from intent count |
+| Empty queue, failed criterion | bounded replanning; no false success |
+| Approval hash changed, expired, revoked or reused | deny; one concurrent consumption winner; no unrelated work blocked |
+| Browser closed, reconnect after SSE gap | host continues authorized cycles; snapshot reconciles, stale UI visible |
+| Import backup with invalid path/hash | reject; no runner auto-enable |
+| Binary on clean supported host | no external runtime/DB required; actual tested OS documented |
+| Dashboard workflow | operator views plan/intent/Kanban, approves/rejects, pauses/resumes, inspects verified evidence |
+
+Use [23](23-requirements.md) PR IDs and [22](22-execution-contracts.md) invariants. Public alpha mock runner demonstration is mandatory; real unattended provider execution separately gated. No tests are currently implemented. Use [experiment template](research/experiment-template.md), record actual results and limitations.
 
 ## Research experiment
 
