@@ -1,0 +1,16 @@
+name: Feature / implementation task
+description: Propose scoped work with acceptance criteria
+title: '[Feature]: '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and scope
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance tests, dependencies and security considerations
+    validations:
+      required: true

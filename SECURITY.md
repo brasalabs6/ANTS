@@ -1,0 +1,3 @@
+# Security policy
+
+Pre-alpha design only; no supported production release. Do not deploy unreviewed code with sensitive data or unrestricted credentials. See [threat model](docs/06-security.md). When remote repository is created, enable GitHub private vulnerability reporting before public beta and document a monitored security contact. Until then use private maintainer communication; do not publish secrets or exploit details in public issues. Report affected version, impact, reproduction in an authorized environment and mitigation. No testing against third-party systems without authorization. Target acknowledgement within 5 business days once a monitored channel exists (not an existing SLA).
