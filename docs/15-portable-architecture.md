@@ -1,6 +1,6 @@
 # 15 — Portable architecture and revised implementation sequence
 
-This v0.5 document overrides conflicting deployment/runtime/priority assumptions in 01–12. Existing domain, security, evidence, lease and tenant requirements remain applicable. Older docs describe cloud-oriented design history; do not implement their mandatory Fastify/Postgres/MCP-first assumptions for local MVP.
+This v0.6 document overrides conflicting deployment/runtime/priority assumptions in 01–12. Existing domain, security, evidence, lease and tenant requirements remain applicable. Older docs describe cloud-oriented design history; do not implement their mandatory Fastify/Postgres/MCP-first assumptions for local MVP.
 
 ## Structure
 
@@ -14,11 +14,11 @@ Cloud adapter retains organization/colony tenant isolation, RLS and Postgres fen
 
 - R01: build spike: compile standalone executable on Linux, smoke-test on clean host, SQLite migration + FTS, CLI JSON, version/help. Verify macOS/Windows targets separately.
 - R02: constitution import/revision, local data directory, init/status/pause, durable goal lifecycle and acceptance criteria, domain invariants.
-- R03: HTTP + CLI client-only join for localhost and remote endpoints with scoped credentials, named profiles, board/events and bounded context retrieval; two clients on distinct hosts, neither initializes a server.
-- R04: atomic task claims, fences, revisioned plans, checkpoint/artifacts, independent review, two-worker handoff demo; begin dashboard Kanban and goal views.
+- R03: role/capability registry; HTTP + CLI client-only join for localhost and remote endpoints with scoped credentials, named profiles, board/events and bounded context retrieval; two clients on distinct hosts, neither initializes a server.
+- R04: atomic task claims, fences, revisioned plans and exploration intents with provenance, checkpoint/artifacts, independent review, two-worker handoff demo; begin dashboard Kanban and goal views.
 - R05: export/restore, restart recovery, security tests, release packaging/checksums.
-- R06: enforced guardrails, approval lifecycle and operator dashboard controls; [Goal Engine](17-goal-engine.md) reconciliation, evidence verification and opt-in Pulse mock runner with continuation/stop tests; real Codex/Claude adapters only after sandbox/permission review.
-- R07: proactive goal demo plus [Command Center](18-command-center.md) and [guardrails/approvals](19-guardrails-and-approvals.md) release gate; public CLI-first alpha includes web dashboard, headless operation remains supported; optional MCP/SDK adapters after core usability.
+- R06: role-aware planner/worker/reviewer cycle, fenced planning revisions, enforced guardrails, approval lifecycle and operator dashboard controls; [Goal Engine](17-goal-engine.md) reconciliation, evidence verification and opt-in Pulse mock runner with continuation/stop tests; real Codex/Claude adapters only after sandbox/permission review.
+- R07: proactive goal demo including replaceable planner and exploration intent view, plus [Command Center](18-command-center.md) and [guardrails/approvals](19-guardrails-and-approvals.md) release gate; public CLI-first alpha includes web dashboard, headless operation remains supported; optional MCP/SDK adapters after core usability.
 - R08: hosted Postgres adapter, tenancy, quotas/billing, load and restore tests before hosted beta.
 - R09: evaluate transfer of validated capabilities, portable contracts and experimental fixtures into broader orchestration platforms including Plane; optional interoperability and federation RFC after core validation. Capture experiment evidence from R01 onward.
 

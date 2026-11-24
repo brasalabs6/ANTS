@@ -23,6 +23,10 @@ Agent-first does not mean human-excluded. One operator typically governs many au
 
 Dependency graph, timeline and detailed run visualization complement Kanban; an accessible list is always available. Graph can follow MVP if needed, but plan/task relationships and dependency status must already be visible. No fabricated online status or completion percentages. Counts derived from authorized persisted state, distinguish last known vs live, proposed vs verified.
 
+## Intents and roles (v0.6)
+
+Expose an Intents list/filter with hypothesis, parent goal/plan, linked tasks, evidence, resolution and blockers. Swarm view distinguishes authorized role, capability, model and current session. Plans show alternatives and revision lineage. Add a provenance graph as an enhancement; list views remain accessible. Human admission/role changes are authenticated commands and cannot bypass guardrails. See [20](20-intents-and-agent-roles.md).
+
 ## Plan model
 
 Plan is a revisioned proposal to achieve a goal, not a mandatory centrally assigned workflow. Fields: org/colony/mission/goal ID and goal revision, plan ID/revision, author, rationale, criterion coverage, task/dependency references, assumptions, status draft/proposed/accepted/rejected/superseded, approval policy and provenance. Multiple alternative plans may coexist; acceptance does not change constitution or permissions. Agents can propose or revise plans within policy. Operator can edit by creating revision, accept/reject, reprioritize or request revision. Invalidate affected work/verification using existing fences and revision semantics; preserve historical rationale. Independent ready tasks can progress in parallel. Do not require human approval of every plan under an explicitly enabled autonomous policy.

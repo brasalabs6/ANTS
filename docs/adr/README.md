@@ -6,6 +6,8 @@
 
 [ADR-015 — Human operator control plane](015-operator-control-plane.md) requires a usable dashboard and enforced approvals for public alpha.
 
+[ADR-016 — Exploration intents and replaceable roles](016-exploration-intents-and-roles.md) adds functional specialization without permanent centralized command.
+
 Proposed decisions; review before coding. Record new ADRs rather than silently changing old ones.
 
 | ID | Decision | Alternatives and tradeoffs |

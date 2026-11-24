@@ -32,6 +32,10 @@ Reconcile on goal activation, new verified evidence, task transitions, lease exp
 
 Reconciliation is at-least-once, not exactly-once. Serialize with mission/goal lifecycle and budget locks in deterministic order (org -> mission -> goal -> task/lease -> event counter). A goal revision change invalidates stale verification and work fences as required. Recheck revision, status, budget and approved schedule immediately before dispatch. Never make external side effects solely on basis of board text. No automatic credential expansion, agent self-registration, infinite retry or autonomous changes to evaluation rules. Existing sandbox, review, stop and revocation requirements apply.
 
+## Exploration and planner roles (v0.6)
+
+[Intent and role specification](20-intents-and-agent-roles.md) distinguishes an exploratory direction from a task and from a scheduler run intent. Goal Engine requests scoped planning sessions when criterion coverage is missing; replaceable planners and other authorized agents propose plans/intents/tasks. Use fenced revision admission and bounded triggers, not mandatory central supervision. Intent resolution is not goal completion. No role expands authority.
+
 ## Human control (v0.5)
 
 Expose current goal, unmet criteria, plan revisions, tasks, approval blockers and evidence through [Command Center](18-command-center.md). Goal reconciliation honors [guardrails](19-guardrails-and-approvals.md); no pending approval may be bypassed for progress. A human can revise plans, reprioritize tasks, pause and reject evidence; approved criterion changes require explicit revision. Independent safe work may continue while one intent awaits approval.
