@@ -42,3 +42,8 @@ Planner, Worker and independent Reviewer are replaceable scoped roles. A planner
 ## Failure handling
 
 Network retry: idempotency. Duplicate event: consumer receipt. Agent crash: expiry. Conflicting edits: artifact branches + review. Bad checkpoint: reject/quarantine. Dependency cycle: reject edge. Repeated failures: bounded retry then human triage. Contradictory findings: mark disputed, preserve alternatives. Mission pause: deny mutations except explicitly allowed administrative/audit actions and safe review according to policy.
+
+
+## Earlier priority heuristic (illustrative, not normative)
+
+A simple proposed ranking was P = I × U × C × F / (E + epsilon), where I is impact, U urgency, C confidence, F capability fit, E estimated effort, and epsilon avoids division by zero. This is an unvalidated heuristic, not a requirement or a formula taken from a cited paper. Normalize inputs, require nonnegative bounded effort, cap values and add age/fairness/contestation adjustments before experimenting. Apply only after hard eligibility checks; never trade off authority, dependencies, budget, deadline or safety for score. A lower score must not permanently starve a required criterion. Compare against FIFO and simple priority at matched resources; record the actual results. Default to a transparent deterministic ranking for MVP rather than requiring an LLM to choose every task.
