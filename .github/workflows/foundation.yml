@@ -42,8 +42,7 @@ jobs:
         shell: sh
         run: |
           set -eu
-          ! command -v bun
-          ! command -v node
+          if command -v bun || command -v node; then exit 1; fi
           sha256sum -c SHA256SUMS
           chmod +x ants ants-sqlite-smoke
           ./ants --help

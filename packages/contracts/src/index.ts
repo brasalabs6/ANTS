@@ -8,11 +8,19 @@ export interface CommandInfo {
   readonly description: string;
 }
 export type CliEnvelope =
-  | { readonly schemaVersion: 1; readonly ok: true; readonly data: VersionInfo | { readonly commands: readonly CommandInfo[] } }
-  | { readonly schemaVersion: 1; readonly ok: false; readonly error: {
-      readonly code: "usage";
-      readonly message: string;
-      readonly requestId: string;
-      readonly retryable: false;
-      readonly nextStep: string;
-    } };
+  | {
+      readonly schemaVersion: 1;
+      readonly ok: true;
+      readonly data: VersionInfo | { readonly commands: readonly CommandInfo[] };
+    }
+  | {
+      readonly schemaVersion: 1;
+      readonly ok: false;
+      readonly error: {
+        readonly code: "usage";
+        readonly message: string;
+        readonly requestId: string;
+        readonly retryable: false;
+        readonly nextStep: string;
+      };
+    };
