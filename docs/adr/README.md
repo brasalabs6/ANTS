@@ -30,3 +30,5 @@ Proposed decisions; review before coding. Record new ADRs rather than silently c
 Acceptance: owner reviews changes with security, operational and compatibility implications; record date, status, context, alternatives, consequences and rollback strategy in separate ADR when implementation starts.
 
 [ADR-018 — Foundation toolchain and fixture storage](018-foundation-toolchain.md) records provisional R01 decisions and outstanding review/packaging gates.
+
+[ADR-019 — Delegated autonomous engineering](019-autonomous-engineering.md) records standing development authorization and evidence-based integration without mandatory maintainer intervention.
