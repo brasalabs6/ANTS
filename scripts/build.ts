@@ -17,7 +17,7 @@ mkdirSync("dist", { recursive: true });
 for (const [entry, out] of [
   ["apps/ants/src/main.ts", "dist/ants"],
   ["scripts/sqlite-smoke.ts", "dist/ants-sqlite-smoke"],
-]) {
+] as const) {
   const result = Bun.spawnSync(
     [
       process.execPath,
