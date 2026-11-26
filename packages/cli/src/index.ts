@@ -50,3 +50,27 @@ export function runCli(
     stderr: "",
   };
 }
+
+/** Reserved modes fail closed until their later milestone implements real behavior. */
+export function unavailableMode(
+  args: readonly string[],
+  message: string,
+  requestId: string,
+): CliResult {
+  const envelope: CliEnvelope = {
+    schemaVersion: 1,
+    ok: false,
+    error: {
+      code: "unavailable",
+      message,
+      requestId,
+      retryable: false,
+      nextStep: "Run ants --help for supported commands.",
+    },
+  };
+  return {
+    exitCode: 7,
+    stdout: args.includes("--json") ? `${JSON.stringify(envelope)}\n` : "",
+    stderr: `${message}\n`,
+  };
+}

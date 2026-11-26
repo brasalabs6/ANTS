@@ -40,3 +40,16 @@ test("invalid commands fail without echoing untrusted input", () => {
   });
   expect(run("--help", "--help").code).toBe(2);
 });
+
+test("reserved host and runner modes fail closed without effects", () => {
+  for (const command of ["init", "serve", "runner"]) {
+    const result = run(command, "--json");
+    expect(result.code).toBe(7);
+    expect(JSON.parse(result.out)).toMatchObject({
+      schemaVersion: 1,
+      ok: false,
+      error: { code: "unavailable", retryable: false },
+    });
+    expect(result.err).toContain("unavailable");
+  }
+});

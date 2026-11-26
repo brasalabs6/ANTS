@@ -1,9 +1,6 @@
-import { runCli } from "@ants/cli";
-import { version } from "@ants/config";
+import { type CliResult, runCli } from "@ants/cli";
+import { buildRevision, version } from "@ants/config";
 
-export function runClient(args: readonly string[]): number {
-  const result = runCli(args, { version, runtime: Bun.version }, crypto.randomUUID());
-  if (result.stdout) process.stdout.write(result.stdout);
-  if (result.stderr) process.stderr.write(result.stderr);
-  return result.exitCode;
+export function runClient(args: readonly string[], requestId: string): CliResult {
+  return runCli(args, { version, runtime: Bun.version, revision: buildRevision }, requestId);
 }

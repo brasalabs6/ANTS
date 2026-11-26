@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { migrate, migrations, openFixtureDatabase, openFixtureStore } from "@ants/storage-sqlite";
@@ -131,4 +131,11 @@ test("failed migration and transaction roll back; competing writer is rejected",
       competitor.close();
       db.close();
     }
+  }));
+
+test("database path rejects a dangling symlink", () =>
+  temporaryDb((filename) => {
+    if (process.platform === "win32") return;
+    symlinkSync(`${filename}.missing`, filename);
+    expect(() => openFixtureDatabase(filename)).toThrow("Invalid database file");
   }));

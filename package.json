@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "lint": "biome check apps packages scripts tests && bun scripts/check-boundaries.ts",
-    "build": "bun build --compile apps/ants/src/main.ts --outfile dist/ants && bun build --compile scripts/sqlite-smoke.ts --outfile dist/ants-sqlite-smoke",
+    "build": "bun scripts/build.ts",
     "check": "bun run lint && bun run typecheck && bun test && bun run test:negative && bun run build",
     "format": "biome format --write apps packages scripts tests",
     "test:negative": "bun scripts/check-negative.ts"
