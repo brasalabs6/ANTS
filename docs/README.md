@@ -30,6 +30,9 @@ All specifications are design-stage proposals, consolidated 2026-11-24. No runti
 | [22 Execution contracts](22-execution-contracts.md) | Cross-module vocabulary, lifecycle, consistency and failure semantics |
 | [23 Requirements](23-requirements.md) | Stable requirements and release acceptance traceability |
 | [24 Handoff](24-handoff.md) | Current state, open decisions, next steps and checkpoint format |
+| [25 Implementation contract](25-implementation-contract.md) | Mandatory engineering process, invariants, test/review/integration gates |
+| [Engineering backlog](backlog/README.md) | Seven epics, 90 numbered implementation items |
+| [Implementation evidence](implementation/README.md) | Per-item checkpoints and verified acceptance |
 | [Research](research/README.md) | Literature and evidence |
 | [ADRs](adr/README.md) | Decisions and alternatives |
 | [Contract examples](specs/README.md) | Initial OpenAPI and event JSON Schema |

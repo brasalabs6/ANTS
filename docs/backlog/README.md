@@ -11,3 +11,5 @@ Seven issue bodies, 90 numbered implementation items: 72 alpha (R01–R07), 18 l
 - [R07 — Public Alpha — Command Center, Kanban, E2E and release; post-alpha backlog annex](R07.md): 16 + 18 post-alpha items
 
 See [roadmap](../12-roadmap.md), [requirements](../23-requirements.md), [handoff](../24-handoff.md). No implementation initiated. GitHub issue creation may require interactive confirmation; verify actual issue IDs before recording links.
+
+All seven epic drafts are governed by [Implementation Contract IC v1.0](../25-implementation-contract.md). Use [per-item evidence records](../implementation/README.md) and independent review before checking any item. R07 annex is tracked separately by original IDs and is not an alpha gate. Actual issue creation remains unconfirmed at contract adoption; no implementation blocked by missing issue IDs if maintainer authorizes the tracked item.

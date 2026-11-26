@@ -60,6 +60,8 @@ New contributor or fresh agent session: read [project context and decisions](doc
 
 ## Contributing
 
+All implementation and review work follows the [Implementation Contract IC v1.0](docs/25-implementation-contract.md). See the [90-item engineering backlog](docs/backlog/README.md) and [implementation evidence](docs/implementation/README.md). R01 is the first implementation milestone; check actual current status before starting.
+
 Read [CONTRIBUTING](CONTRIBUTING.md), [AGENTS.md](AGENTS.md) and [SECURITY](SECURITY.md). We welcome feedback and scoped implementation proposals. No hosted service or install command exists yet.
 
 ## License
