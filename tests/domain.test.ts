@@ -18,7 +18,10 @@ test("domain boundary rejects storage and runtime imports", () => {
     'export * from "../../storage-sqlite/src/index";',
     'type DB = import("bun:sqlite").Database;',
     'const db = await import("bun:sqlite");',
-    'Bun.serve({});',
-  ]) expect(domainViolations(source, root + "/index.ts", root).length).toBeGreaterThan(0);
-  expect(domainViolations('import { value } from "./value";', root + "/index.ts", root)).toEqual([]);
+    "Bun.serve({});",
+  ])
+    expect(domainViolations(source, `${root}/index.ts`, root).length).toBeGreaterThan(0);
+  expect(domainViolations('import { value } from "./value";', `${root}/index.ts`, root)).toEqual(
+    [],
+  );
 });

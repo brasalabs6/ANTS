@@ -4,15 +4,16 @@ import { dirname, resolve } from "node:path";
 import type { FixtureNote, FixtureSearch, FixtureStore, Scope } from "@ants/application";
 import { migrate } from "./migrations";
 
-export { migrate, migrations } from "./migrations";
 export type { Migration } from "./migrations";
+export { migrate, migrations } from "./migrations";
 
 const MAX_CANDIDATES = 200;
 const MAX_RESULTS = 20;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function validateScope(scope: Scope): void {
-  if (!UUID.test(scope.orgId) || !UUID.test(scope.colonyId)) throw new Error("Invalid fixture scope");
+  if (!UUID.test(scope.orgId) || !UUID.test(scope.colonyId))
+    throw new Error("Invalid fixture scope");
 }
 
 /** The caller supplies a private, existing directory on a local filesystem. */
@@ -31,7 +32,7 @@ export function openFixtureDatabase(filename: string, busyTimeoutMs = 250): Data
   try {
     if (process.platform !== "win32") chmodSync(path, 0o600);
     db.exec("PRAGMA foreign_keys = ON");
-    db.exec("PRAGMA busy_timeout = " + busyTimeoutMs);
+    db.exec(`PRAGMA busy_timeout = ${busyTimeoutMs}`);
     const wal = db.query<{ journal_mode: string }, []>("PRAGMA journal_mode = WAL").get();
     const fk = db.query<{ foreign_keys: number }, []>("PRAGMA foreign_keys").get();
     if (wal?.journal_mode !== "wal" || fk?.foreign_keys !== 1) {
@@ -55,7 +56,10 @@ function enableFts(db: Database): boolean {
 }
 
 /** Bounded fixture search; production indexing, auth and ranking are deferred to R03. */
-export function openFixtureStore(filename: string, options: { readonly forceLexical?: boolean } = {}): FixtureStore {
+export function openFixtureStore(
+  filename: string,
+  options: { readonly forceLexical?: boolean } = {},
+): FixtureStore {
   const db = openFixtureDatabase(filename);
   try {
     migrate(db);
@@ -76,28 +80,40 @@ export function openFixtureStore(filename: string, options: { readonly forceLexi
       },
       insert(scope, note) {
         validateScope(scope);
-        if (!UUID.test(note.id) || !note.body || note.body.length > 4096 ||
-            !Number.isSafeInteger(note.createdAtMs) || note.createdAtMs < 0) {
+        if (
+          !UUID.test(note.id) ||
+          !note.body ||
+          note.body.length > 4096 ||
+          !Number.isSafeInteger(note.createdAtMs) ||
+          note.createdAtMs < 0
+        ) {
           throw new Error("Invalid fixture note");
         }
-        db.transaction(() => insertNote.run(scope.orgId, scope.colonyId, note.id, note.body, note.createdAtMs)).immediate();
+        db.transaction(() =>
+          insertNote.run(scope.orgId, scope.colonyId, note.id, note.body, note.createdAtMs),
+        ).immediate();
       },
       search(scope, query): FixtureSearch {
         validateScope(scope);
         const term = query.trim();
-        if (!term || term.length > 128 || term.includes("\0")) throw new Error("Invalid search query");
+        if (!term || term.length > 128 || term.includes("\0"))
+          throw new Error("Invalid search query");
         const rows = candidates.all(scope.orgId, scope.colonyId, MAX_CANDIDATES + 1);
         const bounded = rows.slice(0, MAX_CANDIDATES);
         let matches: FixtureNote[];
         if (fts) {
           matches = db.transaction(() => {
             db.exec("DELETE FROM temp.ants_search");
-            const index = db.query<never, [number, string]>("INSERT INTO temp.ants_search (rowid, body) VALUES (?, ?)");
-            bounded.forEach((note, i) => index.run(i + 1, note.body));
-            const phrase = '"' + term.replaceAll('"', '""') + '"';
-            const hits = db.query<{ rowid: number }, [string, number]>(
-              "SELECT rowid FROM temp.ants_search WHERE ants_search MATCH ? ORDER BY rowid LIMIT ?",
-            ).all(phrase, MAX_RESULTS + 1);
+            const index = db.query<never, [number, string]>(
+              "INSERT INTO temp.ants_search (rowid, body) VALUES (?, ?)",
+            );
+            for (const [i, note] of bounded.entries()) index.run(i + 1, note.body);
+            const phrase = `"${term.replaceAll('"', '""')}"`;
+            const hits = db
+              .query<{ rowid: number }, [string, number]>(
+                "SELECT rowid FROM temp.ants_search WHERE ants_search MATCH ? ORDER BY rowid LIMIT ?",
+              )
+              .all(phrase, MAX_RESULTS + 1);
             return hits.map(({ rowid }) => {
               const note = bounded[rowid - 1];
               if (!note) throw new Error("Fixture search index mismatch");
@@ -114,7 +130,9 @@ export function openFixtureStore(filename: string, options: { readonly forceLexi
           truncated: rows.length > MAX_CANDIDATES || matches.length > MAX_RESULTS,
         };
       },
-      close() { db.close(); },
+      close() {
+        db.close();
+      },
     };
   } catch (error) {
     db.close();

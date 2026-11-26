@@ -37,29 +37,37 @@ export function migrate(db: Database, desired: readonly Migration[] = migrations
       throw new Error("Invalid migration sequence");
     }
   });
-  return db.transaction(() => {
-    db.exec(`CREATE TABLE IF NOT EXISTS schema_migrations (
+  return db
+    .transaction(() => {
+      db.exec(`CREATE TABLE IF NOT EXISTS schema_migrations (
       version INTEGER PRIMARY KEY,
       checksum TEXT NOT NULL,
       applied_at_ms INTEGER NOT NULL
     )`);
-    const history = db.query<{ version: number; checksum: string }, []>(
-      "SELECT version, checksum FROM schema_migrations ORDER BY version",
-    ).all();
-    for (const [index, applied] of history.entries()) {
-      const expected = desired[index];
-      if (!expected || applied.version !== index + 1 || applied.checksum !== checksum(expected.sql)) {
-        throw new Error("Migration history mismatch");
+      const history = db
+        .query<{ version: number; checksum: string }, []>(
+          "SELECT version, checksum FROM schema_migrations ORDER BY version",
+        )
+        .all();
+      for (const [index, applied] of history.entries()) {
+        const expected = desired[index];
+        if (
+          !expected ||
+          applied.version !== index + 1 ||
+          applied.checksum !== checksum(expected.sql)
+        ) {
+          throw new Error("Migration history mismatch");
+        }
       }
-    }
-    const record = db.query<never, [number, string, number]>(
-      "INSERT INTO schema_migrations (version, checksum, applied_at_ms) VALUES (?, ?, ?)",
-    );
-    const pending = desired.slice(history.length);
-    for (const migration of pending) {
-      db.exec(migration.sql);
-      record.run(migration.version, checksum(migration.sql), Date.now());
-    }
-    return pending.length;
-  }).immediate();
+      const record = db.query<never, [number, string, number]>(
+        "INSERT INTO schema_migrations (version, checksum, applied_at_ms) VALUES (?, ?, ?)",
+      );
+      const pending = desired.slice(history.length);
+      for (const migration of pending) {
+        db.exec(migration.sql);
+        record.run(migration.version, checksum(migration.sql), Date.now());
+      }
+      return pending.length;
+    })
+    .immediate();
 }
