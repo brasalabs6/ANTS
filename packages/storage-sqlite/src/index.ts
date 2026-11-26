@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { chmodSync, existsSync, lstatSync } from "node:fs";
+import { chmodSync, lstatSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import type { FixtureNote, FixtureSearch, FixtureStore, Scope } from "@ants/application";
 import { migrate } from "./migrations";
@@ -25,7 +25,8 @@ export function openFixtureDatabase(filename: string, busyTimeoutMs = 250): Data
   if (!parent.isDirectory() || (process.platform !== "win32" && (parent.mode & 0o077) !== 0)) {
     throw new Error("Fixture database requires a private directory");
   }
-  if (existsSync(path) && !lstatSync(path).isFile()) throw new Error("Invalid database file");
+  const existing = lstatSync(path, { throwIfNoEntry: false });
+  if (existing && !existing.isFile()) throw new Error("Invalid database file");
   const db = new Database(path, { create: true, strict: true });
   try {
     if (process.platform !== "win32") chmodSync(path, 0o600);
