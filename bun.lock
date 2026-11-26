@@ -1,0 +1,61 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "ants-workspace",
+      "devDependencies": {
+        "@types/bun": "1.3.5",
+        "typescript": "5.9.3",
+      },
+    },
+    "apps/ants": {
+      "name": "@ants/ants",
+      "version": "0.1.0-dev.0",
+      "dependencies": {
+        "@ants/cli": "workspace:*",
+        "@ants/config": "workspace:*",
+      },
+    },
+    "packages/cli": {
+      "name": "@ants/cli",
+      "version": "0.1.0-dev.0",
+      "dependencies": {
+        "@ants/contracts": "workspace:*",
+      },
+    },
+    "packages/config": {
+      "name": "@ants/config",
+      "version": "0.1.0-dev.0",
+    },
+    "packages/contracts": {
+      "name": "@ants/contracts",
+      "version": "0.1.0-dev.0",
+    },
+    "packages/domain": {
+      "name": "@ants/domain",
+      "version": "0.1.0-dev.0",
+    },
+  },
+  "packages": {
+    "@ants/ants": ["@ants/ants@workspace:apps/ants"],
+
+    "@ants/cli": ["@ants/cli@workspace:packages/cli"],
+
+    "@ants/config": ["@ants/config@workspace:packages/config"],
+
+    "@ants/contracts": ["@ants/contracts@workspace:packages/contracts"],
+
+    "@ants/domain": ["@ants/domain@workspace:packages/domain"],
+
+    "@types/bun": ["@types/bun@1.3.5", "", { "dependencies": { "bun-types": "1.3.5" } }, "sha512-RnygCqNrd3srIPEWBd5LFeUYG7plCoH2Yw9WaZGyNmdTEei+gWaHqydbaIRkIkcbXwhBT94q78QljxN0Sk838w=="],
+
+    "@types/node": ["@types/node@26.6.11", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-uUyQ2XLEz+EXh34lmS3GhKrkqn/8FU7KUiKRpk347At2bmnMVWss45yz8b4FG/tUtmV1tV/+TVkITItPROyeeQ=="],
+
+    "bun-types": ["bun-types@1.3.5", "", { "dependencies": { "@types/node": "*" } }, "sha512-inmAYe2PFLs0SUbFOWSVD24sg1jFlMPxOjOSSCYqUgn4Hsc3rDc7dFvfVYjFPNHtov6kgUeulV4SxbuIV/stPw=="],
+
+    "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
+
+    "undici-types": ["undici-types@8.9.0", "", {}, "sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg=="],
+  }
+}
