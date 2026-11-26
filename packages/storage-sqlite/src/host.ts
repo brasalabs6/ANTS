@@ -42,7 +42,10 @@ function privateFile(path: string, required: boolean): void {
 function configure(db: Database): void {
   db.exec("PRAGMA foreign_keys = ON");
   db.exec("PRAGMA busy_timeout = 250");
-  if (db.query<{ journal_mode: string }, []>("PRAGMA journal_mode = WAL").get()?.journal_mode !== "wal") {
+  if (
+    db.query<{ journal_mode: string }, []>("PRAGMA journal_mode = WAL").get()?.journal_mode !==
+    "wal"
+  ) {
     throw new Error("Host database requires WAL");
   }
   if (db.query<{ foreign_keys: number }, []>("PRAGMA foreign_keys").get()?.foreign_keys !== 1) {
@@ -52,7 +55,13 @@ function configure(db: Database): void {
 
 /** Trusted local bootstrap only; no network or public CLI exposure in this slice. */
 export function bootstrapHost(dataDir: string, name: unknown): HostIdentity {
-  if (typeof name !== "string" || name !== name.trim() || !name || name.length > 120 || /[\u0000-\u001f\u007f]/.test(name)) {
+  if (
+    typeof name !== "string" ||
+    name !== name.trim() ||
+    !name ||
+    name.length > 120 ||
+    [...name].some((char) => char.charCodeAt(0) < 32 || char.charCodeAt(0) === 127)
+  ) {
     throw new Error("Invalid colony name");
   }
   const path = localPath(dataDir);
@@ -76,9 +85,25 @@ export function bootstrapHost(dataDir: string, name: unknown): HostIdentity {
     const event = randomUUID();
     db.transaction(() => {
       db.query("INSERT INTO organizations VALUES (?, ?)").run(identity.orgId, name);
-      db.query("INSERT INTO colonies VALUES (?, ?, ?, ?)").run(identity.orgId, identity.colonyId, name, identity.createdAtMs);
-      db.query("INSERT INTO host_owners VALUES (?, ?, ?, ?)").run(identity.orgId, identity.colonyId, identity.ownerId, digest(identity.credential));
-      db.query("INSERT INTO host_events VALUES (?, ?, 1, ?, 'colony.created', ?, ?)").run(identity.orgId, identity.colonyId, event, identity.ownerId, identity.createdAtMs);
+      db.query("INSERT INTO colonies VALUES (?, ?, ?, ?)").run(
+        identity.orgId,
+        identity.colonyId,
+        name,
+        identity.createdAtMs,
+      );
+      db.query("INSERT INTO host_owners VALUES (?, ?, ?, ?)").run(
+        identity.orgId,
+        identity.colonyId,
+        identity.ownerId,
+        digest(identity.credential),
+      );
+      db.query("INSERT INTO host_events VALUES (?, ?, 1, ?, 'colony.created', ?, ?)").run(
+        identity.orgId,
+        identity.colonyId,
+        event,
+        identity.ownerId,
+        identity.createdAtMs,
+      );
       db.query("INSERT INTO host_audit VALUES (?, 'host.bootstrap')").run(event);
       db.query("INSERT INTO host_outbox (event_id) VALUES (?)").run(event);
     }).immediate();
@@ -107,13 +132,22 @@ export function openHostReader(dataDir: string): HostReader {
        WHERE o.credential_digest = ? AND o.org_id = ? AND o.colony_id = ?`,
     );
     // Preparing the statement is not sufficient on all SQLite builds; validate schema now.
-    const history = db.query<{ version: number; checksum: string }, []>(
-      "SELECT version, checksum FROM schema_migrations ORDER BY version",
-    ).all();
-    if (history.length !== hostMigrations.length || history.some((entry, i) => {
-      const migration = hostMigrations[i];
-      return !migration || entry.version !== migration.version || entry.checksum !== digest(migration.sql);
-    })) {
+    const history = db
+      .query<{ version: number; checksum: string }, []>(
+        "SELECT version, checksum FROM schema_migrations ORDER BY version",
+      )
+      .all();
+    if (
+      history.length !== hostMigrations.length ||
+      history.some((entry, i) => {
+        const migration = hostMigrations[i];
+        return (
+          !migration ||
+          entry.version !== migration.version ||
+          entry.checksum !== digest(migration.sql)
+        );
+      })
+    ) {
       throw new Error("Host schema mismatch");
     }
     return {
