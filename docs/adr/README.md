@@ -28,3 +28,5 @@ Proposed decisions; review before coding. Record new ADRs rather than silently c
 | ADR-011 | Vite + TypeScript frontend required for alpha; UI framework pending (ADR-015) | user correction supersedes ADR-001 frontend choice; Vite does not select a rendering framework |
 
 Acceptance: owner reviews changes with security, operational and compatibility implications; record date, status, context, alternatives, consequences and rollback strategy in separate ADR when implementation starts.
+
+[ADR-018 — Foundation toolchain and fixture storage](018-foundation-toolchain.md) records provisional R01 decisions and outstanding review/packaging gates.

@@ -31,3 +31,7 @@ Stable schema-versioned JSON on stdout with --json, diagnostic stderr, UTF-8, no
 ## Onboarding instructions for agent users
 
 Provide optional copyable AGENTS.md/agent-specific snippet: use configured profile, retrieve context before work, select eligible task, claim, renew, checkpoint with evidence, submit, release/stop on invalid fence, honor policy and report blockers. Do not overwrite existing agent instructions, pretend session history persisted, or require MCP. Supported providers verified separately; agent needs its own installed/authenticated runtime. CLI client only needs ANTS binary and network path. Operator dashboard optional at runtime but required alpha deliverable.
+
+## R01 development candidate
+
+Only help/version are implemented; no release. `ants --help`, `ants --version`, `--json`, `--noninteractive`; JSON schema [cli-help-version.schema.json](cli-help-version.schema.json). Version JSON includes runtime and build revision; reserved init/serve/runner fail closed with exit 7; invalid commands exit 2. No database/listener/runner effects. All other commands above remain intended, not implemented.

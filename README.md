@@ -56,7 +56,7 @@ Mission registry, persistent goals and evidence-based completion, typed blackboa
 
 ## Documentation — start here
 
-New contributor or fresh agent session: read [project context and decisions](docs/21-project-context.md), [cross-module contracts](docs/22-execution-contracts.md), [requirements matrix](docs/23-requirements.md), [development handoff](docs/24-handoff.md) and [canonical roadmap](docs/12-roadmap.md). Then use the [complete documentation index](docs/README.md), [architecture](docs/02-architecture.md) and [ADRs](docs/adr/README.md). The repository, not a previous conversation, is the source of truth. [Português](README.pt-BR.md). No executable, service or performance benchmark exists yet.
+New contributor or fresh agent session: read [project context and decisions](docs/21-project-context.md), [cross-module contracts](docs/22-execution-contracts.md), [requirements matrix](docs/23-requirements.md), [development handoff](docs/24-handoff.md) and [canonical roadmap](docs/12-roadmap.md). Then use the [complete documentation index](docs/README.md), [architecture](docs/02-architecture.md) and [ADRs](docs/adr/README.md). The repository, not a previous conversation, is the source of truth. [Português](README.pt-BR.md). No released executable, service or performance benchmark exists yet.
 
 ## Contributing
 
@@ -67,3 +67,7 @@ Read [CONTRIBUTING](CONTRIBUTING.md), [AGENTS.md](AGENTS.md) and [SECURITY](SECU
 ## License
 
 MIT — see [LICENSE](LICENSE). ANTS is a working name; brand clearance is pending. No affiliation with any AI model provider.
+
+## Foundation development candidate
+
+On the R01 development branch, install pinned Bun 1.3.5, then run `bun install --frozen-lockfile`, `bun run check`, `bun run cli --help`, or `./dist/ants --version --json` after build. `dist/ants-sqlite-smoke` exercises a temporary synthetic fixture, not a colony. No host, runner, dashboard or SaaS is implemented. See [handoff](docs/24-handoff.md) for verification status and limitations.
