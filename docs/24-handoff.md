@@ -46,3 +46,7 @@ Audit input commit: 5d227751ef70168ed4ed5bd34fcf2df2a4b3312e (41 files). Reviewe
 ## Implementation contract adoption
 
 IC v1.0 in [25](25-implementation-contract.md) establishes mandatory scoped ownership, quality, test evidence, independent review and integration/handoff requirements. [Backlog](backlog/README.md) contains 90 unique IDs: 72 alpha and 18 post-alpha. Use [checkpoint template](implementation/checkpoint-template.md) for per-item records. At adoption, implementation remains unstarted, R01 next once authorized; GitHub issue list was empty at the preceding read, so do not infer issues from draft documents. No stack choices resolved by this process change. Direct main documentation authorization is not blanket permission for code, release or deployment. Verify actual state at the next session.
+
+## R01 candidate handoff — 2026-11-26
+
+Branch feat/r01-01-foundation contains code candidate bfd6af1fa02688cc6c2b9d353dfade42685141c9, locally tested, not integrated. Eight per-item checkpoints record evidence. Six items awaiting independent review; R01.04 and R01.08 have incomplete acceptance. O01/O02/O04/O05 and CLI subset of O07 provisionally addressed by [ADR-018](adr/018-foundation-toolchain.md); no final approval claimed. Current main remains documentation baseline. Next: open PR, check CI and clean Linux run, repeat final lock tests, independent review, authorized integration; do not start dependent R02 until gate passes. No PR number confirmed at this read.
