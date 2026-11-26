@@ -1,0 +1,26 @@
+{
+  "name": "ants-workspace",
+  "version": "0.1.0-dev.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.3.5",
+  "engines": {
+    "bun": "1.3.5"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "cli": "bun apps/ants/src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "lint": "bun scripts/check-boundaries.ts",
+    "build": "bun build --compile apps/ants/src/main.ts --outfile dist/ants",
+    "check": "bun run lint && bun run typecheck && bun test && bun run build"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.5",
+    "typescript": "5.9.3"
+  }
+}
