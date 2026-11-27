@@ -20,3 +20,6 @@ export interface FixtureStore {
   search(scope: Scope, query: string): FixtureSearch;
   close(): void;
 }
+
+export type { ColonyIdentity, HostIdentity, HostReader } from "./host";
+export { readColony } from "./host";

@@ -139,3 +139,5 @@ export function openFixtureStore(
     throw error;
   }
 }
+
+export { bootstrapHost, openHostReader } from "./host";
